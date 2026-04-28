@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Truck } from 'lucide-react';
-import logo from '../assets/images/dj-logo.png';
+import logo from '../assets/images/dj-logo.jpg';
 
 const navLinks = [
   { name: 'Início', path: '/' },
@@ -12,14 +12,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     setIsOpen(false);
@@ -28,26 +21,13 @@ export default function Navbar() {
   return (
     <nav
       id="navbar"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-dark/95 backdrop-blur-xl shadow-2xl shadow-black/50 border-b border-dark-border'
-          : 'bg-transparent'
-      }`}
-    >
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-xl shadow-md shadow-black/5 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group" id="nav-logo">
-            <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-primary/30 group-hover:border-primary transition-colors duration-300">
+            <div className="w-16 h-16">
               <img src={logo} alt="DJ Caminhões" className="w-full h-full object-cover" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-display font-bold text-white group-hover:text-primary transition-colors duration-300">
-                DJ
-              </span>
-              <span className="text-xs font-medium text-light-muted tracking-widest uppercase -mt-1">
-                Caminhões
-              </span>
             </div>
           </Link>
 
@@ -58,11 +38,10 @@ export default function Navbar() {
                 key={link.path}
                 to={link.path}
                 id={`nav-${link.name.toLowerCase().replace(/[^a-z]/g, '')}`}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
-                  location.pathname === link.path
-                    ? 'text-primary bg-primary/10'
-                    : 'text-light-muted hover:text-white hover:bg-white/5'
-                }`}
+                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${location.pathname === link.path
+                  ? 'text-primary bg-primary/10'
+                  : 'text-slate-900 hover:text-slate-500 hover:bg-white/5'
+                  }`}
               >
                 {link.name}
                 {location.pathname === link.path && (
@@ -77,7 +56,7 @@ export default function Navbar() {
             <a
               href="tel:+5511999999999"
               id="nav-phone"
-              className="flex items-center gap-2 text-sm text-light-muted hover:text-white transition-colors"
+              className="flex items-center gap-2 text-sm text-slate-900 hover:text-slate-500 transition-colors"
             >
               <Phone size={16} />
               <span>(11) 99999-9999</span>
@@ -96,7 +75,7 @@ export default function Navbar() {
           <button
             id="nav-mobile-toggle"
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+            className="md:hidden text-slate-900 p-2 rounded-lg hover:bg-white/10 transition-colors"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -105,25 +84,23 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden transition-all duration-500 overflow-hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
+        className={`md:hidden transition-all duration-500 overflow-hidden ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
       >
-        <div className="bg-dark-light/95 backdrop-blur-xl border-t border-dark-border px-4 py-6 space-y-2">
+        <div className="bg-slate-50/95 backdrop-blur-xl border-t border-slate-200 px-4 py-6 space-y-2">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
-                location.pathname === link.path
-                  ? 'text-primary bg-primary/10'
-                  : 'text-light-muted hover:text-white hover:bg-white/5'
-              }`}
+              className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${location.pathname === link.path
+                ? 'text-primary bg-primary/10'
+                : 'text-slate-500 hover:text-white hover:bg-white/5'
+                }`}
             >
               {link.name}
             </Link>
           ))}
-          <div className="pt-4 border-t border-dark-border">
+          <div className="pt-4 border-t border-slate-200">
             <Link
               to="/contato"
               className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-3 rounded-xl text-sm font-semibold w-full"

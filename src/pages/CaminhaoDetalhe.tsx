@@ -52,10 +52,10 @@ export default function CaminhaoDetalhe() {
 
   if (!truck) {
     return (
-      <main className="bg-dark min-h-screen flex items-center justify-center">
+      <main className="bg-white min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-display font-black text-white mb-4">Caminhão não encontrado</h1>
-          <p className="text-light-muted mb-8">O caminhão que você procura não está disponível.</p>
+          <h1 className="text-4xl font-display font-black text-slate-900 mb-4">Caminhão não encontrado</h1>
+          <p className="text-slate-500 mb-8">O caminhão que você procura não está disponível.</p>
           <Link
             to="/estoque"
             className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white px-6 py-3 rounded-xl font-semibold transition-all"
@@ -85,16 +85,16 @@ export default function CaminhaoDetalhe() {
   const prevImage = () => setCurrentImage((prev) => (prev - 1 + truck.images.length) % truck.images.length);
 
   return (
-    <main className="bg-dark min-h-screen">
+    <main className="bg-white min-h-screen">
       {/* Breadcrumb */}
       <section className="pt-24 pb-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-sm text-light-muted">
-            <Link to="/" className="hover:text-white transition-colors">
+          <nav className="flex items-center gap-2 text-sm text-slate-500">
+            <Link to="/" className="hover:text-slate-900 transition-colors">
               Início
             </Link>
             <ChevronRight size={14} />
-            <Link to="/estoque" className="hover:text-white transition-colors">
+            <Link to="/estoque" className="hover:text-slate-900 transition-colors">
               Estoque
             </Link>
             <ChevronRight size={14} />
@@ -108,7 +108,7 @@ export default function CaminhaoDetalhe() {
         <button
           id="btn-back"
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-light-muted hover:text-white transition-colors group"
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-medium">Voltar</span>
@@ -121,7 +121,7 @@ export default function CaminhaoDetalhe() {
           {/* Gallery */}
           <div className="animate-fade-in">
             {/* Main Image */}
-            <div className="relative rounded-3xl overflow-hidden bg-dark-card border border-dark-border group mb-4">
+            <div className="relative rounded-3xl overflow-hidden bg-white border border-slate-200 group mb-4">
               <img
                 src={truck.images[currentImage]}
                 alt={`${truck.name} - Foto ${currentImage + 1}`}
@@ -137,25 +137,25 @@ export default function CaminhaoDetalhe() {
               <button
                 onClick={prevImage}
                 id="gallery-prev"
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-slate-900 hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
               >
                 <ChevronLeft size={20} />
               </button>
               <button
                 onClick={nextImage}
                 id="gallery-next"
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-slate-900 hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
               >
                 <ChevronRight size={20} />
               </button>
 
               {/* Counter */}
-              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg">
+              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-slate-900 text-xs px-3 py-1.5 rounded-lg">
                 {currentImage + 1} / {truck.images.length}
               </div>
 
               {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-card/50 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Thumbnails */}
@@ -164,11 +164,10 @@ export default function CaminhaoDetalhe() {
                 <button
                   key={i}
                   onClick={() => setCurrentImage(i)}
-                  className={`relative rounded-xl overflow-hidden border-2 transition-all duration-300 flex-1 h-20 sm:h-24 ${
-                    currentImage === i
+                  className={`relative rounded-xl overflow-hidden border-2 transition-all duration-300 flex-1 h-20 sm:h-24 ${currentImage === i
                       ? 'border-primary shadow-lg shadow-primary/20'
-                      : 'border-dark-border hover:border-dark-border/80 opacity-60 hover:opacity-100'
-                  }`}
+                      : 'border-slate-200 hover:border-slate-200/80 opacity-60 hover:opacity-100'
+                    }`}
                 >
                   <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
                 </button>
@@ -182,24 +181,23 @@ export default function CaminhaoDetalhe() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <span className="text-xs text-primary font-semibold tracking-wider uppercase">{truck.brand}</span>
-                <h1 className="text-3xl sm:text-4xl font-display font-black text-white mt-1">{truck.name}</h1>
+                <h1 className="text-3xl sm:text-4xl font-display font-black text-slate-900 mt-1">{truck.name}</h1>
               </div>
               <div className="flex gap-2">
                 <button
                   id="btn-like"
                   onClick={() => setLiked(!liked)}
-                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 ${
-                    liked
+                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 ${liked
                       ? 'bg-primary/10 border-primary text-primary'
-                      : 'border-dark-border text-light-muted hover:text-primary hover:border-primary/30'
-                  }`}
+                      : 'border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'
+                    }`}
                 >
                   <Heart size={18} className={liked ? 'fill-primary' : ''} />
                 </button>
                 <button
                   id="btn-share"
                   onClick={() => navigator.clipboard.writeText(window.location.href)}
-                  className="w-10 h-10 rounded-xl border border-dark-border text-light-muted hover:text-primary hover:border-primary/30 flex items-center justify-center transition-all"
+                  className="w-10 h-10 rounded-xl border border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 flex items-center justify-center transition-all"
                 >
                   <Share2 size={18} />
                 </button>
@@ -207,7 +205,7 @@ export default function CaminhaoDetalhe() {
             </div>
 
             {/* Quick Info */}
-            <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-light-muted">
+            <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-slate-500">
               <span className="flex items-center gap-1.5">
                 <Calendar size={16} className="text-primary" />
                 {truck.year}
@@ -225,16 +223,16 @@ export default function CaminhaoDetalhe() {
             </div>
 
             {/* Price */}
-            <div className="p-6 rounded-2xl bg-dark-card border border-dark-border mb-6">
-              <p className="text-sm text-light-muted mb-1">Preço</p>
-              <p className="text-3xl sm:text-4xl font-display font-black text-gradient-red">{truck.price}</p>
-              <p className="text-xs text-light-dim mt-2">* Consulte condições de financiamento</p>
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 mb-6">
+              <p className="text-sm text-slate-500 mb-1">Preço</p>
+              <p className="text-3xl sm:text-4xl font-display font-black text-gradient-primary">{truck.price}</p>
+              <p className="text-xs text-slate-400 mt-2">* Consulte condições de financiamento</p>
             </div>
 
             {/* Description */}
             <div className="mb-8">
-              <h2 className="text-lg font-display font-bold text-white mb-3">Sobre este caminhão</h2>
-              <p className="text-sm text-light-muted leading-relaxed">{truck.description}</p>
+              <h2 className="text-lg font-display font-bold text-slate-900 mb-3">Sobre este caminhão</h2>
+              <p className="text-sm text-slate-500 leading-relaxed">{truck.description}</p>
             </div>
 
             {/* CTA Buttons */}
@@ -265,9 +263,9 @@ export default function CaminhaoDetalhe() {
             <div className="p-5 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
               <div className="flex items-center gap-3 mb-2">
                 <CreditCard size={20} className="text-primary" />
-                <h3 className="text-white font-semibold">Financiamento Facilitado</h3>
+                <h3 className="text-slate-900 font-semibold">Financiamento Facilitado</h3>
               </div>
-              <p className="text-sm text-light-muted">
+              <p className="text-sm text-slate-500">
                 Parcelas a partir de <span className="text-primary font-bold">R$ 8.500/mês</span>. Consulte condições
                 especiais com nosso time comercial.
               </p>
@@ -281,8 +279,8 @@ export default function CaminhaoDetalhe() {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Specs */}
           <AnimatedSection animation="animate-slide-left">
-            <div className="p-6 sm:p-8 rounded-3xl bg-dark-card border border-dark-border">
-              <h2 className="text-xl font-display font-bold text-white mb-6 flex items-center gap-2">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
+              <h2 className="text-xl font-display font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <Cog size={22} className="text-primary" />
                 Ficha Técnica
               </h2>
@@ -290,16 +288,15 @@ export default function CaminhaoDetalhe() {
                 {specItems.map((spec, i) => (
                   <div
                     key={spec.label}
-                    className={`flex items-center gap-4 py-4 ${
-                      i !== specItems.length - 1 ? 'border-b border-dark-border' : ''
-                    }`}
+                    className={`flex items-center gap-4 py-4 ${i !== specItems.length - 1 ? 'border-b border-slate-200' : ''
+                      }`}
                   >
                     <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                       <spec.icon size={16} className="text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-light-dim">{spec.label}</p>
-                      <p className="text-sm text-white font-medium truncate">{spec.value}</p>
+                      <p className="text-xs text-slate-400">{spec.label}</p>
+                      <p className="text-sm text-slate-900 font-medium truncate">{spec.value}</p>
                     </div>
                   </div>
                 ))}
@@ -309,8 +306,8 @@ export default function CaminhaoDetalhe() {
 
           {/* Features */}
           <AnimatedSection animation="animate-slide-right">
-            <div className="p-6 sm:p-8 rounded-3xl bg-dark-card border border-dark-border">
-              <h2 className="text-xl font-display font-bold text-white mb-6 flex items-center gap-2">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
+              <h2 className="text-xl font-display font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <CheckCircle2 size={22} className="text-primary" />
                 Equipamentos e Opcionais
               </h2>
@@ -318,12 +315,12 @@ export default function CaminhaoDetalhe() {
                 {truck.features.map((feature) => (
                   <div
                     key={feature}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-dark/50 border border-dark-border/50 hover:border-primary/20 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-white/50 border border-slate-200/50 hover:border-primary/20 transition-colors"
                   >
                     <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
                       <CheckCircle2 size={12} className="text-primary" />
                     </div>
-                    <span className="text-sm text-light-muted">{feature}</span>
+                    <span className="text-sm text-slate-500">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -335,8 +332,8 @@ export default function CaminhaoDetalhe() {
       {/* Related Trucks */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <AnimatedSection className="mb-10">
-          <h2 className="text-2xl sm:text-3xl font-display font-black text-white">
-            Outros Caminhões que Podem te <span className="text-gradient-red">Interessar</span>
+          <h2 className="text-2xl sm:text-3xl font-display font-black text-slate-900">
+            Outros Caminhões que Podem te <span className="text-gradient-primary">Interessar</span>
           </h2>
         </AnimatedSection>
 
@@ -345,7 +342,7 @@ export default function CaminhaoDetalhe() {
             <AnimatedSection key={rt.id} className={`delay-${Math.min((i + 1) * 100, 400)}`}>
               <Link
                 to={`/caminhao/${rt.id}`}
-                className="group block bg-dark-card border border-dark-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
+                className="group block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
               >
                 <div className="relative h-44 overflow-hidden">
                   <img
@@ -353,23 +350,22 @@ export default function CaminhaoDetalhe() {
                     alt={rt.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-card to-transparent" />
                   <span className="absolute top-3 right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-lg">
                     {rt.tag}
                   </span>
                 </div>
                 <div className="p-4 space-y-2">
-                  <h3 className="text-base font-display font-bold text-white group-hover:text-primary transition-colors">
+                  <h3 className="text-base font-display font-bold text-slate-900 group-hover:text-primary transition-colors">
                     {rt.name}
                   </h3>
-                  <div className="flex items-center gap-3 text-xs text-light-muted">
+                  <div className="flex items-center gap-3 text-xs text-slate-500">
                     <span>{rt.year}</span>
                     <span className="w-1 h-1 rounded-full bg-dark-border" />
                     <span>{rt.km} km</span>
                   </div>
-                  <div className="pt-2 border-t border-dark-border flex items-center justify-between">
+                  <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
                     <span className="text-primary font-display font-bold">{rt.price}</span>
-                    <ChevronRight size={16} className="text-light-dim group-hover:text-primary transition-colors" />
+                    <ChevronRight size={16} className="text-slate-400 group-hover:text-primary transition-colors" />
                   </div>
                 </div>
               </Link>

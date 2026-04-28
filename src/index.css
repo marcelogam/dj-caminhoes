@@ -4,10 +4,10 @@
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Outfit', sans-serif;
   
-  --color-primary: #DC2626;
-  --color-primary-light: #EF4444;
-  --color-primary-dark: #B91C1C;
-  --color-primary-glow: #DC262640;
+  --color-primary: #FF5A00;
+  --color-primary-light: #FF7B33;
+  --color-primary-dark: #CC4800;
+  --color-primary-glow: #FF5A0040;
   
   --color-dark: #0A0A0A;
   --color-dark-light: #1A1A1A;
@@ -129,9 +129,9 @@ html {
 
 /* Glass effect */
 .glass {
-  background: rgba(20, 20, 20, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .glass-light {
@@ -142,14 +142,14 @@ html {
 
 /* Gradient text */
 .text-gradient {
-  background: linear-gradient(135deg, #fff 0%, #DC2626 100%);
+  background: linear-gradient(135deg, #FF5A00 0%, #FF7B33 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.text-gradient-red {
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #B91C1C 100%);
+.text-gradient-primary {
+  background: linear-gradient(135deg, #FF7B33 0%, #FF5A00 50%, #CC4800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
