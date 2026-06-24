@@ -69,8 +69,8 @@ export default function Estoque() {
                 id={`filter-${brand.toLowerCase().replace(/[^a-z]/g, '')}`}
                 onClick={() => setSelectedBrand(brand)}
                 className={`whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${selectedBrand === brand
-                    ? 'bg-primary text-white'
-                    : 'bg-white border border-slate-200 text-slate-500 hover:text-white hover:border-primary/30'
+                  ? 'bg-primary text-white'
+                  : 'bg-white border border-slate-200 text-slate-500 hover:text-white hover:border-primary/30'
                   }`}
               >
                 {brand}
@@ -100,9 +100,6 @@ export default function Estoque() {
                       alt={truck.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <span className="absolute top-3 right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-lg">
-                      {truck.tag}
-                    </span>
                   </div>
 
                   <div className="p-5 space-y-4">

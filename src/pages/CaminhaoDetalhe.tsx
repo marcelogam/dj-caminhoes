@@ -336,9 +336,6 @@ export default function CaminhaoDetalhe() {
                     alt={rt.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <span className="absolute top-3 right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-lg">
-                    {rt.tag}
-                  </span>
                 </div>
                 <div className="p-4 space-y-2">
                   <h3 className="text-base font-display font-bold text-slate-900 group-hover:text-primary transition-colors">
