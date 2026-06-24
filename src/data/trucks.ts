@@ -101,7 +101,7 @@ export const allTrucks: Truck[] = [
   },
   {
     id: 3,
-    name: 'Volkswagen 9.150',
+    name: 'Volkswagen 9-150',
     year: '2011',
     km: '8.000',
     fuel: 'Diesel',

@@ -162,30 +162,11 @@ export default function CaminhaoDetalhe() {
 
           {/* Details */}
           <div className="animate-fade-in-up">
-            {/* Title & Actions */}
+            {/* Title */}
             <div className="flex items-start justify-between mb-4">
               <div>
                 <span className="text-xs text-primary font-semibold tracking-wider uppercase">{truck.brand}</span>
                 <h1 className="text-3xl sm:text-4xl font-display font-black text-slate-900 mt-1">{truck.name}</h1>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  id="btn-like"
-                  onClick={() => setLiked(!liked)}
-                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 ${liked
-                    ? 'bg-primary/10 border-primary text-primary'
-                    : 'border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'
-                    }`}
-                >
-                  <Heart size={18} className={liked ? 'fill-primary' : ''} />
-                </button>
-                <button
-                  id="btn-share"
-                  onClick={() => navigator.clipboard.writeText(window.location.href)}
-                  className="w-10 h-10 rounded-xl border border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 flex items-center justify-center transition-all"
-                >
-                  <Share2 size={18} />
-                </button>
               </div>
             </div>
 
@@ -268,7 +249,7 @@ export default function CaminhaoDetalhe() {
               Ficha Técnica
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-8">
-              {specItems.map((spec, i) => (
+              {specItems.map((spec) => (
                 <div
                   key={spec.label}
                   className="flex items-center gap-4 py-4 border-b border-slate-200 last:border-b-0"
