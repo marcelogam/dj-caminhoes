@@ -77,8 +77,7 @@ export default function CaminhaoDetalhe() {
     { icon: Gauge, label: 'PBT', value: truck.specs.pbt },
     { icon: Ruler, label: 'Entre-Eixos', value: truck.specs.entreEixos },
     { icon: Shield, label: 'Cabine', value: truck.specs.cabine },
-    { icon: PaintBucket, label: 'Cor', value: truck.specs.cor },
-    { icon: CreditCard, label: 'Placa', value: truck.specs.placa },
+    { icon: PaintBucket, label: 'Cor', value: truck.specs.cor }
   ];
 
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % truck.images.length);
@@ -128,11 +127,6 @@ export default function CaminhaoDetalhe() {
                 className="w-full h-[400px] sm:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
-              {/* Tag */}
-              <span className="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-lg shadow-lg">
-                {truck.tag}
-              </span>
-
               {/* Navigation Arrows */}
               <button
                 onClick={prevImage}
@@ -148,14 +142,6 @@ export default function CaminhaoDetalhe() {
               >
                 <ChevronRight size={20} />
               </button>
-
-              {/* Counter */}
-              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-slate-900 text-xs px-3 py-1.5 rounded-lg">
-                {currentImage + 1} / {truck.images.length}
-              </div>
-
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Thumbnails */}
@@ -165,8 +151,8 @@ export default function CaminhaoDetalhe() {
                   key={i}
                   onClick={() => setCurrentImage(i)}
                   className={`relative rounded-xl overflow-hidden border-2 transition-all duration-300 flex-1 h-20 sm:h-24 ${currentImage === i
-                      ? 'border-primary shadow-lg shadow-primary/20'
-                      : 'border-slate-200 hover:border-slate-200/80 opacity-60 hover:opacity-100'
+                    ? 'border-primary shadow-lg shadow-primary/20'
+                    : 'border-slate-200 hover:border-slate-200/80 opacity-60 hover:opacity-100'
                     }`}
                 >
                   <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
@@ -188,8 +174,8 @@ export default function CaminhaoDetalhe() {
                   id="btn-like"
                   onClick={() => setLiked(!liked)}
                   className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 ${liked
-                      ? 'bg-primary/10 border-primary text-primary'
-                      : 'border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'
+                    ? 'bg-primary/10 border-primary text-primary'
+                    : 'border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'
                     }`}
                 >
                   <Heart size={18} className={liked ? 'fill-primary' : ''} />

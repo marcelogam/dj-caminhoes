@@ -1,3 +1,24 @@
+const allImages: Record<string, string> = import.meta.glob(
+  '../assets/images/trucks/**/*.jpg',
+  { eager: true, import: 'default' }
+);
+
+function getImages(folder: string): string[] {
+  return Object.entries(allImages)
+    .filter(([path]) => path.includes(`/${folder}/`))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, url]) => url);
+}
+
+
+const truckImages = {
+  vwDeliveryExpress: getImages('vwDeliveryExpress'),
+  volvoVM260_2010: getImages('volvoVM260_2010'),
+  vw9150: getImages('vw9.150'),
+  mercedesMB1635: getImages('mercedesMB-1635'),
+  volvoVM260_2011: getImages('volvoVM260_2011'),
+};
+
 import truckWhite from '../assets/images/truck-white.png';
 import truckBlue from '../assets/images/truck-blue.png';
 import truckRed from '../assets/images/truck-red.png';
@@ -13,7 +34,6 @@ export interface Truck {
   image: string;
   images: string[];
   brand: string;
-  tag: string;
   description: string;
   specs: {
     motor: string;
@@ -25,7 +45,6 @@ export interface Truck {
     entreEixos: string;
     cabine: string;
     cor: string;
-    placa: string;
   };
   features: string[];
 }
@@ -33,34 +52,30 @@ export interface Truck {
 export const allTrucks: Truck[] = [
   {
     id: 1,
-    name: 'Scania R450',
-    year: '2024',
+    name: 'Volkswagen 11-180',
+    year: '2020',
     km: '12.000',
     fuel: 'Diesel',
     price: 'R$ 580.000',
-    image: truckWhite,
-    images: [truckWhite, truckWhite, truckWhite],
-    brand: 'Scania',
-    tag: 'Seminovo',
+    image: truckImages.vwDeliveryExpress[0],
+    images: truckImages.vwDeliveryExpress,
+    brand: 'Volkswagen',
     description:
-      'Scania R450 em excelente estado de conservação. Caminhão revisado com garantia de procedência. Ideal para operações de longa distância com máximo conforto e economia de combustível. Cabine leito com ar-condicionado digital e painel multimídia.',
+      'O caminhão na imagem é um Volkswagen Delivery Express, modelo 2020, um utilitário projetado especificamente para entregas urbanas que oferece a facilidade de ser conduzido por motoristas com habilitação categoria B.',
     specs: {
-      motor: 'Scania DC13 6 cilindros',
-      potencia: '450 cv',
-      torque: '2.350 Nm',
-      cambio: 'Opticruise 12 marchas',
-      eixos: '6x2',
-      pbt: '23.000 kg',
-      entreEixos: '3.700 mm',
-      cabine: 'R Highline (Leito)',
+      motor: 'Turbo diesel de 2.8 litros',
+      potencia: '150 cv',
+      torque: '36,7 kgfm',
+      cambio: 'Manual 6 marchas',
+      eixos: '4x2',
+      pbt: '11.000 kg',
+      entreEixos: '3.500 mm',
+      cabine: 'Leito',
       cor: 'Branco',
-      placa: 'Final 5',
     },
     features: [
-      'Ar-condicionado digital',
-      'Piloto automático (Cruise Control)',
-      'Freio retarder',
-      'Suspensão pneumática',
+      'Ar-condicionado',
+      'Freio motor',
       'Painel multimídia com Bluetooth',
       'Câmera de ré',
       'Faróis full LED',
@@ -71,28 +86,26 @@ export const allTrucks: Truck[] = [
   },
   {
     id: 2,
-    name: 'Volvo FH 540',
-    year: '2023',
-    km: '45.000',
+    name: 'Volvo VM 260',
+    year: '2010',
+    km: '725.000',
     fuel: 'Diesel',
-    price: 'R$ 620.000',
-    image: truckBlue,
-    images: [truckBlue, truckBlue, truckBlue],
+    price: 'R$ 230.000',
+    image: truckImages.volvoVM260_2010[0],
+    images: truckImages.volvoVM260_2010,
     brand: 'Volvo',
-    tag: 'Destaque',
     description:
       'Volvo FH 540 Globetrotter XL com pacote completo de conforto e segurança. Motor D13K com a potência necessária para operações pesadas. Pneus em ótimo estado e toda a manutenção feita na rede autorizada Volvo.',
     specs: {
-      motor: 'Volvo D13K 6 cilindros',
-      potencia: '540 cv',
-      torque: '2.600 Nm',
+      motor: 'MWM Acteon 6.12 TCE (ou MWM 7A260)',
+      potencia: '260 cv',
+      torque: '97 kgfm',
       cambio: 'I-Shift 12 marchas',
       eixos: '6x4',
       pbt: '57.000 kg',
       entreEixos: '3.600 mm',
       cabine: 'Globetrotter XL',
-      cor: 'Azul',
-      placa: 'Final 2',
+      cor: 'Branco',
     },
     features: [
       'I-Shift automatizado',
@@ -109,37 +122,31 @@ export const allTrucks: Truck[] = [
   },
   {
     id: 3,
-    name: 'Mercedes Actros 2651',
-    year: '2024',
+    name: 'Volkswagen 9.150',
+    year: '2011',
     km: '8.000',
     fuel: 'Diesel',
-    price: 'R$ 550.000',
-    image: truckRed,
-    images: [truckRed, truckRed, truckRed],
-    brand: 'Mercedes-Benz',
-    tag: 'Novo',
+    price: 'R$ 190.000',
+    image: truckImages.vw9150[0],
+    images: truckImages.vw9150,
+    brand: 'Volkswagen',
     description:
       'Mercedes-Benz Actros 2651 praticamente zero! Modelo top de linha com a revolucionária cabine Megaspace. Tecnologia MirrorCam substituindo os retrovisores tradicionais por câmeras digitais. Máximo em segurança e economia.',
     specs: {
-      motor: 'Mercedes OM 471 6 cilindros',
-      potencia: '510 cv',
-      torque: '2.500 Nm',
-      cambio: 'PowerShift 3 (12 marchas)',
-      eixos: '6x2',
-      pbt: '23.000 kg',
-      entreEixos: '3.600 mm',
-      cabine: 'Megaspace (Leito)',
-      cor: 'Vermelho',
-      placa: 'Final 8',
+      motor: 'Cummins Interact 4.0 (ISBe4 150)',
+      potencia: '150 cv',
+      torque: '56 kgfm',
+      cambio: 'Eaton FS 4205-A',
+      eixos: '4x2',
+      pbt: '9.000 kg',
+      entreEixos: '3.520 mm',
+      cabine: 'Standard',
+      cor: 'Branco',
     },
     features: [
-      'MirrorCam (câmeras digitais)',
-      'Multimedia Cockpit 12"',
-      'Predictive Powertrain Control',
-      'Active Brake Assist 5',
-      'Câmbio PowerShift 3 automatizado',
-      'Ar-condicionado automático',
-      'Faróis LED inteligentes',
+      'Eaton FS 4205-A manual',
+      'Freio motor',
+      'Faróis LED',
       'Suspensão pneumática ECS',
       'Sistema Fleetboard',
       'Assistente de faixa',
@@ -147,28 +154,26 @@ export const allTrucks: Truck[] = [
   },
   {
     id: 4,
-    name: 'DAF XF 530',
-    year: '2023',
-    km: '32.000',
+    name: 'Mercedes MB 1635',
+    year: '2018',
+    km: '499.000',
     fuel: 'Diesel',
-    price: 'R$ 490.000',
-    image: truckSilver,
-    images: [truckSilver, truckSilver, truckSilver],
-    brand: 'DAF',
-    tag: 'Oferta',
+    price: 'R$ 290.000',
+    image: truckImages.mercedesMB1635[0],
+    images: truckImages.mercedesMB1635,
+    brand: 'Mercedes',
     description:
       'DAF XF 530 FTS com cabine Super Space Cab, a mais espaçosa da categoria. Caminhão internacional com tecnologia de ponta e excelente custo-benefício. Manutenção em dia e pneus novos. Oportunidade única!',
     specs: {
-      motor: 'PACCAR MX-13 6 cilindros',
-      potencia: '530 cv',
-      torque: '2.500 Nm',
-      cambio: 'TraXon 12 marchas',
-      eixos: '6x2',
-      pbt: '23.000 kg',
-      entreEixos: '3.800 mm',
-      cabine: 'Super Space Cab',
-      cor: 'Prata',
-      placa: 'Final 1',
+      motor: 'PMercedes-Benz OM 457 LA (BlueTec 5)',
+      potencia: '345 cv',
+      torque: '147,8 kgfm',
+      cambio: 'Câmbio manual ZF 16S 1650, com 16 marchas à frente (sincronizadas) e 2 à ré',
+      eixos: '4x2',
+      pbt: '16.000 kg',
+      entreEixos: '5.050 mm',
+      cabine: 'LS',
+      cor: 'Branco',
     },
     features: [
       'Cabine Super Space Cab',
@@ -185,28 +190,26 @@ export const allTrucks: Truck[] = [
   },
   {
     id: 5,
-    name: 'Scania S500',
-    year: '2022',
+    name: 'Volvo VM 260',
+    year: '2011',
     km: '78.000',
     fuel: 'Diesel',
-    price: 'R$ 510.000',
-    image: truckWhite,
-    images: [truckWhite, truckWhite, truckWhite],
-    brand: 'Scania',
-    tag: 'Seminovo',
+    price: 'R$ 240.000',
+    image: truckImages.volvoVM260_2011[0],
+    images: truckImages.volvoVM260_2011,
+    brand: 'Volvo',
     description:
       'Scania S500 da nova geração com cabine de piso plano. Ideal para motoristas que buscam o máximo de conforto em viagens longas. Motor potente e econômico, com histórico completo de manutenção na rede Scania.',
     specs: {
-      motor: 'Scania DC13 6 cilindros',
-      potencia: '500 cv',
-      torque: '2.550 Nm',
-      cambio: 'Opticruise 12+2 marchas',
+      motor: 'MWM Acteon 6.12 TCE (Euro 3)',
+      potencia: '260 cv',
+      torque: '97 kgfm',
+      cambio: 'Transmissão manual de 9 marchas',
       eixos: '6x2',
       pbt: '23.000 kg',
       entreEixos: '3.700 mm',
-      cabine: 'S Highline (Piso plano)',
-      cor: 'Branco',
-      placa: 'Final 3',
+      cabine: 'Leito',
+      cor: 'Prata',
     },
     features: [
       'Cabine de piso plano',
@@ -231,7 +234,6 @@ export const allTrucks: Truck[] = [
     image: truckBlue,
     images: [truckBlue, truckBlue, truckBlue],
     brand: 'Volvo',
-    tag: 'Seminovo',
     description:
       'Volvo FH 460 com cabine Globetrotter. Excelente opção para quem busca a confiabilidade Volvo com um investimento acessível. Câmbio I-Shift suave e preciso. Histórico completo na rede autorizada.',
     specs: {
@@ -244,7 +246,6 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.600 mm',
       cabine: 'Globetrotter',
       cor: 'Azul',
-      placa: 'Final 7',
     },
     features: [
       'I-Shift automatizado',
@@ -269,7 +270,6 @@ export const allTrucks: Truck[] = [
     image: truckRed,
     images: [truckRed, truckRed, truckRed],
     brand: 'Mercedes-Benz',
-    tag: 'Novo',
     description:
       'Mercedes-Benz Arocs 3345 – o caminhão para trabalho pesado e fora de estrada. Construído para encarar os terrenos mais difíceis com robustez e confiabilidade. Chassi reforçado e suspensão preparada para mineração e construção.',
     specs: {
@@ -282,7 +282,6 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.300 mm',
       cabine: 'ClassicSpace (Curta)',
       cor: 'Vermelho',
-      placa: 'Final 9',
     },
     features: [
       'Tração 6x4 integral',
@@ -307,7 +306,6 @@ export const allTrucks: Truck[] = [
     image: truckSilver,
     images: [truckSilver, truckSilver, truckSilver],
     brand: 'DAF',
-    tag: 'Oferta',
     description:
       'DAF CF 450 versátil e eficiente. O CF é conhecido pelo melhor custo-benefício da linha DAF, sendo ideal para distribuição e operações regionais. Cabine confortável e econômico no consumo de diesel.',
     specs: {
@@ -320,7 +318,6 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.800 mm',
       cabine: 'Space Cab',
       cor: 'Prata',
-      placa: 'Final 4',
     },
     features: [
       'Cabine Space Cab',

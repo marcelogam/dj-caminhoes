@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Truck } from 'lucide-react';
-import logo from '../assets/images/dj-logo.jpg';
+import logo from '../assets/images/logo.jpeg'
 
 const navLinks = [
   { name: 'Início', path: '/' },
@@ -26,7 +26,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group" id="nav-logo">
-            <div className="w-16 h-16">
+            <div className="w-36 h-24">
               <img src={logo} alt="DJ Caminhões" className="w-full h-full object-cover" />
             </div>
           </Link>

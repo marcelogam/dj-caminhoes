@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock, Truck, ChevronRight } from 'lucide-react';
-import logo from '../assets/images/dj-logo.jpg';
+import logo from '../assets/images/logo.jpeg';
 
 export default function Footer() {
   return (
@@ -25,12 +25,12 @@ export default function Footer() {
       </div>
 
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 ">
+              <div className="w-42 h-20 ">
                 <img src={logo} alt="DJ Caminhões" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function Footer() {
             © {new Date().getFullYear()} DJ Caminhões. Todos os direitos reservados.
           </p>
           <p className="text-xs text-slate-400">
-            Desenvolvido com ❤️ por Ye7
+            Desenvolvido por Ye7
           </p>
         </div>
       </div>
