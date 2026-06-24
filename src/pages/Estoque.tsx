@@ -4,7 +4,7 @@ import { Search, Filter, ChevronRight, Calendar, Gauge, Fuel } from 'lucide-reac
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { allTrucks } from '../data/trucks';
 
-const brands = ['Todos', 'Scania', 'Volvo', 'Mercedes-Benz', 'DAF'];
+const brands = ['Todos', ...Array.from(new Set(allTrucks.map((t) => t.brand))).sort()];
 
 function AnimatedSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, isVisible } = useScrollAnimation();

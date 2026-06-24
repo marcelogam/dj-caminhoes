@@ -49,7 +49,7 @@ export default function Contato() {
   const contactInfo = [
     { icon: Phone, label: 'Telefone', value: '(11) 99999-9999', href: 'tel:+5511999999999' },
     { icon: Mail, label: 'E-mail', value: 'contato@djcaminhoes.com.br', href: 'mailto:contato@djcaminhoes.com.br' },
-    { icon: MapPin, label: 'Endereço', value: 'Av. Brasil, 1500 - São Paulo, SP', href: '#' },
+    { icon: MapPin, label: 'Endereço', value: 'Av. Cel. Jove Soares Nogueira, 252 - Riacho das Pedras, Contagem - MG', href: '#' },
     { icon: Clock, label: 'Horário', value: 'Seg-Sex: 08h-18h | Sáb: 08h-13h', href: '#' },
   ];
 

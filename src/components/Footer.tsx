@@ -76,7 +76,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-slate-500">
                 <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
-                <span>Av. Brasil, 1500 - São Paulo, SP</span>
+                <span>Av. Cel. Jove Soares Nogueira, 252 - Riacho das Pedras, Contagem - MG, 32260-470</span>
               </li>
               <li>
                 <a href="tel:+5511999999999" className="flex items-center gap-3 text-sm text-slate-500 hover:text-primary transition-colors">
