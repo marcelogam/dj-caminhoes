@@ -7,8 +7,6 @@ import {
   Fuel,
   ChevronRight,
   ChevronLeft,
-  Share2,
-  Heart,
   Phone,
   Shield,
   Cog,
@@ -44,7 +42,6 @@ export default function CaminhaoDetalhe() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
-  const [liked, setLiked] = useState(false);
 
   const truck = getTruckById(Number(id));
   const relatedTrucks = getRelatedTrucks(Number(id));
