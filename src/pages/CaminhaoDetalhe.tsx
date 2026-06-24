@@ -12,7 +12,6 @@ import {
   Phone,
   Shield,
   Cog,
-  CheckCircle2,
   Truck,
   Zap,
   Settings,
@@ -260,59 +259,32 @@ export default function CaminhaoDetalhe() {
         </div>
       </section>
 
-      {/* Specs & Features Tabs */}
+      {/* Specs Tabs */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Specs */}
-          <AnimatedSection animation="animate-slide-left">
-            <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
-              <h2 className="text-xl font-display font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <Cog size={22} className="text-primary" />
-                Ficha Técnica
-              </h2>
-              <div className="space-y-0">
-                {specItems.map((spec, i) => (
-                  <div
-                    key={spec.label}
-                    className={`flex items-center gap-4 py-4 ${i !== specItems.length - 1 ? 'border-b border-slate-200' : ''
-                      }`}
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <spec.icon size={16} className="text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-slate-400">{spec.label}</p>
-                      <p className="text-sm text-slate-900 font-medium truncate">{spec.value}</p>
-                    </div>
+        <AnimatedSection animation="animate-slide-left">
+          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
+            <h2 className="text-xl font-display font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <Cog size={22} className="text-primary" />
+              Ficha Técnica
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-8">
+              {specItems.map((spec, i) => (
+                <div
+                  key={spec.label}
+                  className="flex items-center gap-4 py-4 border-b border-slate-200 last:border-b-0"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <spec.icon size={16} className="text-primary" />
                   </div>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Features */}
-          <AnimatedSection animation="animate-slide-right">
-            <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
-              <h2 className="text-xl font-display font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <CheckCircle2 size={22} className="text-primary" />
-                Equipamentos e Opcionais
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {truck.features.map((feature) => (
-                  <div
-                    key={feature}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-white/50 border border-slate-200/50 hover:border-primary/20 transition-colors"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                      <CheckCircle2 size={12} className="text-primary" />
-                    </div>
-                    <span className="text-sm text-slate-500">{feature}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-slate-400">{spec.label}</p>
+                    <p className="text-sm text-slate-900 font-medium truncate">{spec.value}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          </AnimatedSection>
-        </div>
+          </div>
+        </AnimatedSection>
       </section>
 
       {/* Related Trucks */}

@@ -20,6 +20,10 @@ const truckImages = {
   mercedes1718: getImages('mercedes1718'),
   fordCargo2429: getImages('fordCargo2429'),
   vw30280: getImages('vw30-280Prime'),
+  vw24280: getImages('vw24280'),
+  mercedesMB815: getImages('mercedesMB815'),
+  ivecoTector240E22: getImages('ivecoTector240E22'),
+  vw15190: getImages('vw15-190'),
 };
 
 export interface Truck {
@@ -44,7 +48,6 @@ export interface Truck {
     cabine: string;
     cor: string;
   };
-  features: string[];
 }
 
 export const allTrucks: Truck[] = [
@@ -70,17 +73,7 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.500 mm',
       cabine: 'Leito',
       cor: 'Branco',
-    },
-    features: [
-      'Ar-condicionado',
-      'Freio motor',
-      'Painel multimídia com Bluetooth',
-      'Câmera de ré',
-      'Faróis full LED',
-      'Volante multifuncional',
-      'Banco do motorista pneumático',
-      'Tomada de força',
-    ],
+    }
   },
   {
     id: 2,
@@ -104,19 +97,7 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.600 mm',
       cabine: 'Globetrotter XL',
       cor: 'Branco',
-    },
-    features: [
-      'I-Shift automatizado',
-      'Ar-condicionado automático',
-      'Volvo Dynamic Steering',
-      'Painel digital 12"',
-      'Adaptive Cruise Control',
-      'Sistema de frenagem EBS',
-      'Suspensão pneumática integral',
-      'Câmera 360°',
-      'Geladeira de cabine',
-      'Cama auxiliar',
-    ],
+    }
   },
   {
     id: 3,
@@ -140,19 +121,11 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.520 mm',
       cabine: 'Standard',
       cor: 'Branco',
-    },
-    features: [
-      'Eaton FS 4205-A manual',
-      'Freio motor',
-      'Faróis LED',
-      'Suspensão pneumática ECS',
-      'Sistema Fleetboard',
-      'Assistente de faixa',
-    ],
+    }
   },
   {
     id: 4,
-    name: 'Mercedes MB 1635',
+    name: 'Mercedes 1635',
     year: '2018',
     km: '499.000',
     fuel: 'Diesel',
@@ -172,19 +145,7 @@ export const allTrucks: Truck[] = [
       entreEixos: '5.050 mm',
       cabine: 'LS',
       cor: 'Branco',
-    },
-    features: [
-      'Cabine Super Space Cab',
-      'Painel digital customizável',
-      'DAF Connect (telemetria)',
-      'Eco Roll (marcha livre)',
-      'Freio motor MX Engine Brake',
-      'Ar-condicionado climatronic',
-      'Câmera de ré',
-      'Suspensão pneumática ECAS',
-      'Bloqueio de diferencial',
-      'Cama extra-larga',
-    ],
+    }
   },
   {
     id: 5,
@@ -208,19 +169,7 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.700 mm',
       cabine: 'Leito',
       cor: 'Prata',
-    },
-    features: [
-      'Cabine de piso plano',
-      'Scania Driver Support',
-      'Retarder integrado',
-      'Cruise Control preditivo',
-      'Ar-condicionado bi-zone',
-      'Infotainment com Apple CarPlay',
-      'Iluminação ambiente LED',
-      'Cama de 80cm',
-      'Porta-copos refrigerado',
-      'Trava de baú automática',
-    ],
+    }
   },
   {
     id: 6,
@@ -244,19 +193,7 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.550 mm',
       cabine: 'Curta',
       cor: 'Branco',
-    },
-    features: [
-      'I-Shift automatizado',
-      'Volvo Connect (telemetria)',
-      'EBS com ABS',
-      'Painel digital 7"',
-      'Ar-condicionado',
-      'Cama leito',
-      'Faróis de neblina LED',
-      'Para-choque integrado',
-      'Volante com regulagem',
-      'Vidros elétricos',
-    ],
+    }
   },
   {
     id: 7,
@@ -280,19 +217,7 @@ export const allTrucks: Truck[] = [
       entreEixos: '3.300 mm',
       cabine: 'Clássica (Curta)',
       cor: 'Prata',
-    },
-    features: [
-      'Tração 6x4 integral',
-      'Bloqueio de diferencial',
-      'Chassi reforçado off-road',
-      'Protetor de cárter',
-      'Turbo Retarder Clutch',
-      'Ar-condicionado',
-      'Active Brake Assist',
-      'Tomada de força traseira',
-      'Suspensão mista (molas/pneum.)',
-      'Preparação para caçamba/betoneira',
-    ],
+    }
   },
   {
     id: 8,
@@ -316,19 +241,103 @@ export const allTrucks: Truck[] = [
       entreEixos: '4.600 mm',
       cabine: 'Leito',
       cor: 'Branco',
-    },
-    features: [
-      'Cabine Space Cab',
-      'DAF Connect',
-      'Freio motor integrado',
-      'Eco Performance Mode',
-      'Ar-condicionado',
-      'Cama de descanso',
-      'Painel multimídia',
-      'Vidros elétricos',
-      'Travas elétricas',
-      'Direção hidráulica',
-    ],
+    }
+  },
+  {
+    id: 9,
+    name: 'Volkswagen Constellation 24.280',
+    year: '2017',
+    km: '624.000',
+    fuel: 'Diesel',
+    price: 'R$ 325.000',
+    image: truckImages.vw24280[0],
+    images: truckImages.vw24280,
+    brand: 'Volkswagen',
+    description:
+      'Volkswagen Constellation 24.280 2017. Caminhão em ótimo estado de conservação, com apenas 624.000 km rodados. Ideal para quem busca um caminhão confiável e econômico. Pneus em ótimo estado de conservação, revisões em dia.',
+    specs: {
+      motor: 'MAN D08 36 280',
+      potencia: '277 cv',
+      torque: '107 kgfm',
+      cambio: 'ZF 9S 1110 TD de 9 marchas',
+      eixos: '6x2',
+      pbt: '23.000 kg',
+      entreEixos: '4.600 mm',
+      cabine: 'Leito',
+      cor: 'Branco',
+    }
+  },
+  {
+    id: 10,
+    name: 'Mercedes-Benz 815',
+    year: '2012',
+    km: '456.000',
+    fuel: 'Diesel',
+    price: 'R$ 220.000',
+    image: truckImages.mercedesMB815[0],
+    images: truckImages.mercedesMB815,
+    brand: 'Mercedes',
+    description:
+      'Mercedes-Benz MB815 2012. Caminhão em ótimo estado de conservação, com apenas 456.000 km rodados. Ideal para quem busca um caminhão confiável e econômico. Pneus em ótimo estado de conservação, revisões em dia.',
+    specs: {
+      motor: 'Mercedes-Benz OM 924 LA (BlueTec 5)',
+      potencia: '156 cv',
+      torque: '59 kgfm',
+      cambio: 'Eaton FSO 4505A, manual, com 5 marchas à frente (sincronizadas) e 1 à ré',
+      eixos: '4x2',
+      pbt: '8.300 kg',
+      entreEixos: '3.050 mm',
+      cabine: 'Curta',
+      cor: 'Branco',
+    }
+  },
+  {
+    id: 11,
+    name: 'Iveco Tector 240E22',
+    year: '2013',
+    km: '419.000',
+    fuel: 'Diesel',
+    price: 'R$ 285.000',
+    image: truckImages.ivecoTector240E22[0],
+    images: truckImages.ivecoTector240E22,
+    brand: 'Iveco',
+    description:
+      'Iveco Tector 240E22 2013. Caminhão em ótimo estado de conservação, com apenas 419.000 km rodados. Ideal para quem busca um caminhão confiável e econômico. Pneus em ótimo estado de conservação, revisões em dia.',
+    specs: {
+      motor: 'FPT NEF 6 (F4A)',
+      potencia: '218 cv',
+      torque: '69,3 kgfm',
+      cambio: 'Eaton FS 5306 A. É uma caixa manual muito resistente, com 6 marchas à frente (completamente sincronizadas) e 1 à ré.',
+      eixos: '6x2',
+      pbt: '23.000 kg',
+      entreEixos: '4.000 mm',
+      cabine: 'Curta',
+      cor: 'Branco',
+    }
+  },
+  {
+    id: 12,
+    name: 'Volkswagen 15-190',
+    year: '2020',
+    km: '90.000',
+    fuel: 'Diesel',
+    price: 'R$ 420.000',
+    image: truckImages.vw15190[0],
+    images: truckImages.vw15190,
+    brand: 'Volkswagen',
+    description:
+      'Volkswagen 15-190 2020. Caminhão em ótimo estado de conservação, com apenas 90.000 km rodados. Ideal para quem busca um caminhão confiável e econômico. Pneus em ótimo estado de conservação, revisões em dia.',
+    specs: {
+      motor: 'MAN D08 34 190',
+      potencia: '186 cv',
+      torque: '71,3 kgfm',
+      cambio: 'Eaton FS 5406-A, manual de 6 marchas à frente (totalmente sincronizadas) e 1 à ré.',
+      eixos: '4x2',
+      pbt: '15.100 kg',
+      entreEixos: '4.500 mm',
+      cabine: 'Leito',
+      cor: 'Branco',
+    }
   },
 ];
 
