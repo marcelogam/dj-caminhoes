@@ -2,6 +2,7 @@ import { Shield, Target, Eye, Users, Award, TrendingUp } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import fleetImg from '../assets/images/truck-fleet.png';
 import serviceImg from '../assets/images/service-center.png';
+import concessionaria from '../assets/images/concessionaria.png';
 
 function AnimatedSection({ children, className = '', animation = 'animate-fade-in-up' }: {
   children: React.ReactNode;
@@ -28,45 +29,46 @@ const values = [
 export default function Sobre() {
   return (
     <main className="bg-white min-h-screen">
+      <section id="hero" className="relative h-auto md:h-[65vh] flex items-center overflow-hidden">
+        <img
+          src={concessionaria}
+          alt="DJ Caminhões concessionaria"
+          className="w-full h-auto pt-10 object-contain md:absolute md:inset-0 md:h-full md:object-cover"
+        />
+      </section>
+
       {/* Header */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent" />
+      <section className="relative pt-15 pb-10 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimatedSection>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 mb-4">
-              Sobre a <span className="text-gradient-primary">DJ Caminhões</span>
+              Sobre a DJ Caminhões
             </h1>
-            <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-              Conheça a história por trás de uma das concessionárias de caminhões mais confiáveis do Brasil.
-            </p>
           </AnimatedSection>
         </div>
       </section>
 
       {/* Story */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection animation="animate-slide-left">
-              <span className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
-                Nossa História
-              </span>
               <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 mb-6">
-                Mais de <span className="text-gradient-primary">15 anos</span> movendo o Brasil
+                Mais de 15 anos movendo o Brasil
               </h2>
               <div className="space-y-4 text-slate-500 leading-relaxed">
                 <p>
-                  A DJ Caminhões nasceu da paixão pelo transporte rodoviário e da vontade de fazer diferente 
-                  no mercado de caminhões. Desde o início, nosso compromisso foi oferecer veículos de qualidade 
+                  A DJ Caminhões nasceu da paixão pelo transporte rodoviário e da vontade de fazer diferente
+                  no mercado de caminhões. Desde o início, nosso compromisso foi oferecer veículos de qualidade
                   com atendimento personalizado.
                 </p>
                 <p>
-                  Ao longo dos anos, construímos uma reputação sólida baseada na confiança, transparência e 
-                  no cuidado com cada cliente. Cada caminhão que sai da nossa loja passa por uma inspeção 
+                  Ao longo dos anos, construímos uma reputação sólida baseada na confiança, transparência e
+                  no cuidado com cada cliente. Cada caminhão que sai da nossa loja passa por uma inspeção
                   rigorosa, garantindo segurança e tranquilidade.
                 </p>
                 <p>
-                  Hoje, somos referência no setor, com mais de 500 caminhões vendidos e uma base de 
+                  Hoje, somos referência no setor, com mais de 500 caminhões vendidos e uma base de
                   clientes fiéis que nos indicam para amigos e parceiros.
                 </p>
               </div>
@@ -98,14 +100,14 @@ export default function Sobre() {
                 <div className="p-6 rounded-2xl bg-white border border-slate-200">
                   <h3 className="text-xl font-display font-bold text-primary mb-2">🎯 Missão</h3>
                   <p className="text-slate-500 leading-relaxed">
-                    Oferecer os melhores caminhões do mercado com atendimento humanizado, preços justos 
+                    Oferecer os melhores caminhões do mercado com atendimento humanizado, preços justos
                     e condições que impulsionam o sucesso dos nossos clientes.
                   </p>
                 </div>
                 <div className="p-6 rounded-2xl bg-white border border-slate-200">
                   <h3 className="text-xl font-display font-bold text-primary mb-2">👁️ Visão</h3>
                   <p className="text-slate-500 leading-relaxed">
-                    Ser a concessionária de caminhões mais confiável e admirada do Brasil, reconhecida 
+                    Ser a concessionária de caminhões mais confiável e admirada do Brasil, reconhecida
                     pela excelência no atendimento e qualidade dos veículos.
                   </p>
                 </div>
@@ -126,7 +128,7 @@ export default function Sobre() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 mb-4">
-              O que nos <span className="text-gradient-primary">Move</span>
+              O que nos Move
             </h2>
             <p className="text-slate-500 max-w-xl mx-auto">
               Nossos valores são o alicerce de tudo que fazemos na DJ Caminhões.

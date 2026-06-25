@@ -24,6 +24,7 @@ const truckImages = {
   mercedesMB815: getImages('mercedesMB815'),
   ivecoTector240E22: getImages('ivecoTector240E22'),
   vw15190: getImages('vw15-190'),
+  mercedesAccelo1017: getImages('mercedesAccelo1017'),
 };
 
 export interface Truck {
@@ -55,9 +56,9 @@ export const allTrucks: Truck[] = [
     id: 1,
     name: 'Volkswagen 11-180',
     year: '2020',
-    km: '12.000',
+    km: '275.000',
     fuel: 'Diesel',
-    price: 'R$ 580.000',
+    price: 'R$ 225.000',
     image: truckImages.vwDeliveryExpress[0],
     images: truckImages.vwDeliveryExpress,
     brand: 'Volkswagen',
@@ -336,6 +337,30 @@ export const allTrucks: Truck[] = [
       pbt: '15.100 kg',
       entreEixos: '4.500 mm',
       cabine: 'Leito',
+      cor: 'Branco',
+    }
+  },
+  {
+    id: 13,
+    name: 'Mercedes Accelo 1017',
+    year: '2024',
+    km: '84.000',
+    fuel: 'Diesel',
+    price: 'R$ 305.000',
+    image: truckImages.mercedesAccelo1017[0],
+    images: truckImages.mercedesAccelo1017,
+    brand: 'Mercedes',
+    description:
+      'Mercedes Accelo 1017 2024. Caminhão em ótimo estado de conservação, com apenas 84.000 km rodados. Ideal para quem busca um caminhão confiável e econômico. Pneus em ótimo estado de conservação, revisões em dia.',
+    specs: {
+      motor: 'Mercedes-Benz OM 924 LA (BlueTec 6)',
+      potencia: '163 cv',
+      torque: '62,2 kgfm',
+      cambio: 'MB G 70-6, com 6 marchas à frente e 1 à ré',
+      eixos: '4x2',
+      pbt: '9.600 kg',
+      entreEixos: '3.200 mm',
+      cabine: 'Curta',
       cor: 'Branco',
     }
   },

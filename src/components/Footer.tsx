@@ -79,9 +79,9 @@ export default function Footer() {
                 <span>Av. Cel. Jove Soares Nogueira, 252 - Riacho das Pedras, Contagem - MG, 32260-470</span>
               </li>
               <li>
-                <a href="tel:+5511999999999" className="flex items-center gap-3 text-sm text-slate-500 hover:text-primary transition-colors">
+                <a href="tel:+5531973279799" className="flex items-center gap-3 text-sm text-slate-500 hover:text-primary transition-colors">
                   <Phone size={18} className="text-primary shrink-0" />
-                  (11) 99999-9999
+                  (31) 973279799
                 </a>
               </li>
               <li>

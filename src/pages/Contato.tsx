@@ -47,7 +47,7 @@ export default function Contato() {
   };
 
   const contactInfo = [
-    { icon: Phone, label: 'Telefone', value: '(11) 99999-9999', href: 'tel:+5511999999999' },
+    { icon: Phone, label: 'Telefone', value: '(31) 973279799', href: 'tel:+5531973279799' },
     { icon: Mail, label: 'E-mail', value: 'contato@djcaminhoes.com.br', href: 'mailto:contato@djcaminhoes.com.br' },
     { icon: MapPin, label: 'Endereço', value: 'Av. Cel. Jove Soares Nogueira, 252 - Riacho das Pedras, Contagem - MG', href: '#' },
     { icon: Clock, label: 'Horário', value: 'Seg-Sex: 08h-18h | Sáb: 08h-13h', href: '#' },
@@ -56,12 +56,11 @@ export default function Contato() {
   return (
     <main className="bg-white min-h-screen">
       {/* Header */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent" />
+      <section className="relative pt-28 pb-16 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimatedSection>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 mb-4">
-              Fale <span className="text-gradient-primary">Conosco</span>
+              Fale Conosco
             </h1>
             <p className="text-lg text-slate-500 max-w-2xl mx-auto">
               Estamos prontos para te atender. Entre em contato e tire todas as suas dúvidas.

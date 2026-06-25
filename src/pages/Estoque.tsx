@@ -29,13 +29,10 @@ export default function Estoque() {
     <main className="bg-white min-h-screen">
       {/* Header */}
       <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent" />
-        <div className="absolute top-20 right-20 w-72 h-72 bg-primary/5 rounded-full blur-[120px]" />
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 mb-4">
-              Nosso <span className="text-gradient-primary">Estoque</span>
+              Nosso Estoque
             </h1>
             <p className="text-lg text-slate-500 max-w-2xl mx-auto">
               Explore nosso catálogo completo de caminhões. Todos revisados e prontos para rodar.
@@ -56,7 +53,7 @@ export default function Estoque() {
               placeholder="Buscar caminhão..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-light-dim focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
+              className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-light-dim focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
             />
           </div>
 
@@ -68,9 +65,9 @@ export default function Estoque() {
                 key={brand}
                 id={`filter-${brand.toLowerCase().replace(/[^a-z]/g, '')}`}
                 onClick={() => setSelectedBrand(brand)}
-                className={`whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${selectedBrand === brand
+                className={`whitespace-nowrap px-4 py-2 rounded-sm text-sm font-medium transition-all duration-300 ${selectedBrand === brand
                   ? 'bg-primary text-white'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:text-white hover:border-primary/30'
+                  : 'bg-white border border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'
                   }`}
               >
                 {brand}

@@ -21,9 +21,9 @@ export default function Navbar() {
   return (
     <nav
       id="navbar"
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-xl shadow-md shadow-black/5 border-b border-slate-200">
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-xl shadow-md shadow-black/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group" id="nav-logo">
             <div className="w-36 h-24">
@@ -54,12 +54,12 @@ export default function Navbar() {
           {/* CTA Desktop */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="tel:+5511999999999"
+              href="tel:+5531973279799"
               id="nav-phone"
               className="flex items-center gap-2 text-sm text-slate-900 hover:text-slate-500 transition-colors"
             >
               <Phone size={16} />
-              <span>(11) 99999-9999</span>
+              <span>(31) 97327-9799</span>
             </a>
             <Link
               to="/contato"

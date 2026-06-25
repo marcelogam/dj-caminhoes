@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -17,6 +17,8 @@ import {
   Ruler,
   PaintBucket,
   CreditCard,
+  X,
+  ZoomIn,
 } from 'lucide-react';
 import { getTruckById, getRelatedTrucks } from '../data/trucks';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -42,9 +44,39 @@ export default function CaminhaoDetalhe() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(0);
 
   const truck = getTruckById(Number(id));
   const relatedTrucks = getRelatedTrucks(Number(id));
+
+  const openLightbox = (index: number) => {
+    setLightboxImage(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  const lightboxNext = useCallback(() => {
+    if (!truck) return;
+    setLightboxImage((prev) => (prev + 1) % truck.images.length);
+  }, [truck]);
+
+  const lightboxPrev = useCallback(() => {
+    if (!truck) return;
+    setLightboxImage((prev) => (prev - 1 + truck.images.length) % truck.images.length);
+  }, [truck]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') lightboxNext();
+      if (e.key === 'ArrowLeft') lightboxPrev();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [lightboxOpen, lightboxNext, lightboxPrev]);
 
   if (!truck) {
     return (
@@ -120,21 +152,27 @@ export default function CaminhaoDetalhe() {
               <img
                 src={truck.images[currentImage]}
                 alt={`${truck.name} - Foto ${currentImage + 1}`}
-                className="w-full h-[400px] sm:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-[400px] sm:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105 cursor-zoom-in"
+                onClick={() => openLightbox(currentImage)}
               />
+
+              {/* Zoom hint */}
+              <div className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <ZoomIn size={16} />
+              </div>
 
               {/* Navigation Arrows */}
               <button
                 onClick={prevImage}
                 id="gallery-prev"
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-slate-900 hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
               >
                 <ChevronLeft size={20} />
               </button>
               <button
                 onClick={nextImage}
                 id="gallery-next"
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-slate-900 hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-primary transition-colors opacity-0 group-hover:opacity-100"
               >
                 <ChevronRight size={20} />
               </button>
@@ -168,22 +206,30 @@ export default function CaminhaoDetalhe() {
             </div>
 
             {/* Quick Info */}
-            <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-slate-500">
-              <span className="flex items-center gap-1.5">
-                <Calendar size={16} className="text-primary" />
-                {truck.year}
-              </span>
-              <span className="w-1 h-1 rounded-full bg-dark-border" />
-              <span className="flex items-center gap-1.5">
-                <Gauge size={16} className="text-primary" />
-                {truck.km} km
-              </span>
-              <span className="w-1 h-1 rounded-full bg-dark-border" />
-              <span className="flex items-center gap-1.5">
-                <Fuel size={16} className="text-primary" />
-                {truck.fuel}
-              </span>
+            <div className="flex flex-wrap items-stretch gap-3 mb-6">
+              <div className="flex items-center gap-3 flex-1 min-w-[130px] px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                <Calendar size={22} className="text-primary shrink-0" />
+                <div>
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wide leading-none mb-0.5">Ano</p>
+                  <p className="text-xl font-black text-slate-900 leading-none">{truck.year}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 flex-1 min-w-[130px] px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                <Gauge size={22} className="text-primary shrink-0" />
+                <div>
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wide leading-none mb-0.5">Quilometragem</p>
+                  <p className="text-xl font-black text-slate-900 leading-none">{truck.km} <span className="text-sm font-semibold text-slate-500">km</span></p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 flex-1 min-w-[130px] px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                <Fuel size={22} className="text-primary shrink-0" />
+                <div>
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wide leading-none mb-0.5">Combustível</p>
+                  <p className="text-xl font-black text-slate-900 leading-none">{truck.fuel}</p>
+                </div>
+              </div>
             </div>
+
 
             {/* Price */}
             <div className="p-6 rounded-2xl bg-white border border-slate-200 mb-6">
@@ -269,7 +315,7 @@ export default function CaminhaoDetalhe() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <AnimatedSection className="mb-10">
           <h2 className="text-2xl sm:text-3xl font-display font-black text-slate-900">
-            Outros Caminhões que Podem te <span className="text-gradient-primary">Interessar</span>
+            Outros Caminhões que Podem te Interessar
           </h2>
         </AnimatedSection>
 
@@ -306,6 +352,60 @@ export default function CaminhaoDetalhe() {
           ))}
         </div>
       </section>
+      {/* Lightbox Modal */}
+      {lightboxOpen && truck && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-sm"
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Visualização ampliada da imagem"
+        >
+          {/* Close Button */}
+          <button
+            onClick={closeLightbox}
+            id="lightbox-close"
+            className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-colors z-10"
+            aria-label="Fechar"
+          >
+            <X size={22} />
+          </button>
+
+          {/* Prev */}
+          <button
+            onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
+            id="lightbox-prev"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-colors z-10"
+            aria-label="Foto anterior"
+          >
+            <ChevronLeft size={26} />
+          </button>
+
+          {/* Image */}
+          <img
+            src={truck.images[lightboxImage]}
+            alt={`${truck.name} - Foto ${lightboxImage + 1}`}
+            className="max-w-[90vw] max-h-[90vh] object-contain rounded-xl shadow-2xl select-none"
+            onClick={(e) => e.stopPropagation()}
+            draggable={false}
+          />
+
+          {/* Next */}
+          <button
+            onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
+            id="lightbox-next"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-colors z-10"
+            aria-label="Próxima foto"
+          >
+            <ChevronRight size={26} />
+          </button>
+
+          {/* Counter */}
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium">
+            {lightboxImage + 1} / {truck.images.length}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

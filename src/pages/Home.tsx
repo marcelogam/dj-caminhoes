@@ -150,8 +150,7 @@ export default function Home() {
             <div>
               <AnimatedSection animation="animate-slide-left">
                 <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 mb-6">
-                  Mais do que Vender,{' '}
-                  <span className="text-gradient-primary">Cuidamos de Tudo</span>
+                  Mais do que Vender, Cuidamos de Tudo
                 </h2>
                 <p className="text-slate-500 mb-10 leading-relaxed">
                   Do financiamento à documentação, da revisão à entrega, a DJ Caminhões oferece
@@ -198,7 +197,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimatedSection className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-slate-900 mb-4">
-              A <span className="text-gradient-primary">Confiança</span> que Você Precisa
+              A Confiança que Você Precisa
             </h2>
           </AnimatedSection>
 
