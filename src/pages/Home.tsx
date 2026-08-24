@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, ChevronRight, Wrench, FileCheck, CreditCard } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -5,9 +6,9 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import heroImage from '../assets/images/hero_image.png'
 import serviceImg from '../assets/images/service-center.png';
 import fleetImg from '../assets/images/truck-fleet.png';
-import { allTrucks } from '../data/trucks';
+import { allTrucks, type Truck } from '../data/trucks';
+import { useEstoqueCaminhoes } from '@/hooks/useEstoqueCaminhoes';
 
-const featuredTrucks = allTrucks.slice(0, 8);
 
 const stats = [
   { value: '500+', label: 'Caminhões Vendidos' },
@@ -56,6 +57,37 @@ function AnimatedSection({ children, className = '', animation = 'animate-fade-i
 }
 
 export default function Home() {
+  const { data: dbTrucks } = useEstoqueCaminhoes();
+
+  const featuredTrucks: Truck[] = useMemo(() => {
+    if (dbTrucks && dbTrucks.length > 0) {
+      return dbTrucks.slice(0, 8).map((t) => ({
+        id: t.id,
+        name: t.nome,
+        year: String(t.ano),
+        km: String(t.km),
+        fuel: t.combustivel || 'Diesel',
+        price: t.preco || 'Sob Consulta',
+        image: t.image_banner || (t.images && t.images[0]) || '',
+        images: t.images || (t.image_banner ? [t.image_banner] : []),
+        brand: t.marca,
+        description: t.descricao || '',
+        specs: {
+          motor: t.motor || '',
+          potencia: t.potencia || '',
+          torque: t.torque || '',
+          cambio: t.cambio || '',
+          eixos: t.eixos || '4x2',
+          pbt: t.pbt || '',
+          entreEixos: t.entre_eixos || '',
+          cabine: t.cabine || 'Curta',
+          cor: t.cor || 'Branco',
+        },
+      }));
+    }
+    return allTrucks.slice(0, 8);
+  }, [dbTrucks]);
+
   return (
     <main className="bg-white min-h-screen">
       {/* ========== HERO ========== */}

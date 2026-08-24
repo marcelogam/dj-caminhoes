@@ -10,7 +10,7 @@ import {
   Phone,
   Shield,
   Cog,
-  Truck,
+  Truck as TruckIcon,
   Zap,
   Settings,
   RotateCcw,
@@ -19,9 +19,11 @@ import {
   CreditCard,
   X,
   ZoomIn,
+  Loader2,
 } from 'lucide-react';
-import { getTruckById, getRelatedTrucks } from '../data/trucks';
+import { getTruckById, getRelatedTrucks, type Truck } from '../data/trucks';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useCaminhao } from '@/hooks/useEstoqueCaminhoes';
 
 function AnimatedSection({
   children,
@@ -47,8 +49,44 @@ export default function CaminhaoDetalhe() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(0);
 
-  const truck = getTruckById(Number(id));
+  const { data: dbTruck, isLoading } = useCaminhao(id);
+
+  const staticTruck = getTruckById(Number(id));
+
+  // Combinar dados do banco ou estático
+  const truck: Truck | undefined = dbTruck
+    ? {
+        id: dbTruck.id,
+        name: dbTruck.nome,
+        year: String(dbTruck.ano),
+        km: String(dbTruck.km),
+        fuel: dbTruck.combustivel || 'Diesel',
+        price: dbTruck.preco || 'Sob Consulta',
+        image: dbTruck.image_banner || (dbTruck.images && dbTruck.images[0]) || '',
+        images:
+          dbTruck.images && dbTruck.images.length > 0
+            ? dbTruck.images
+            : dbTruck.image_banner
+            ? [dbTruck.image_banner]
+            : [''],
+        brand: dbTruck.marca,
+        description: dbTruck.descricao || '',
+        specs: {
+          motor: dbTruck.motor || '-',
+          potencia: dbTruck.potencia || '-',
+          torque: dbTruck.torque || '-',
+          cambio: dbTruck.cambio || '-',
+          eixos: dbTruck.eixos || '4x2',
+          pbt: dbTruck.pbt || '-',
+          entreEixos: dbTruck.entre_eixos || '-',
+          cabine: dbTruck.cabine || 'Curta',
+          cor: dbTruck.cor || 'Branco',
+        },
+      }
+    : staticTruck;
+
   const relatedTrucks = getRelatedTrucks(Number(id));
+
 
   const openLightbox = (index: number) => {
     setLightboxImage(index);
@@ -78,6 +116,17 @@ export default function CaminhaoDetalhe() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [lightboxOpen, lightboxNext, lightboxPrev]);
 
+  if (isLoading && !truck) {
+    return (
+      <main className="bg-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-slate-500 font-medium">Carregando detalhes do caminhão...</p>
+        </div>
+      </main>
+    );
+  }
+
   if (!truck) {
     return (
       <main className="bg-white min-h-screen flex items-center justify-center">
@@ -101,7 +150,7 @@ export default function CaminhaoDetalhe() {
     { icon: Zap, label: 'Potência', value: truck.specs.potencia },
     { icon: RotateCcw, label: 'Torque', value: truck.specs.torque },
     { icon: Settings, label: 'Câmbio', value: truck.specs.cambio },
-    { icon: Truck, label: 'Eixos', value: truck.specs.eixos },
+    { icon: TruckIcon, label: 'Eixos', value: truck.specs.eixos },
     { icon: Gauge, label: 'PBT', value: truck.specs.pbt },
     { icon: Ruler, label: 'Entre-Eixos', value: truck.specs.entreEixos },
     { icon: Shield, label: 'Cabine', value: truck.specs.cabine },
@@ -180,7 +229,7 @@ export default function CaminhaoDetalhe() {
 
             {/* Thumbnails */}
             <div className="flex gap-3">
-              {truck.images.map((img, i) => (
+              {truck.images.map((img: string, i: number) => (
                 <button
                   key={i}
                   onClick={() => setCurrentImage(i)}

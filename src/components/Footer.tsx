@@ -122,9 +122,13 @@ export default function Footer() {
           <p className="text-xs text-slate-400">
             © {new Date().getFullYear()} DJ Caminhões. Todos os direitos reservados.
           </p>
-          <p className="text-xs text-slate-400">
-            Desenvolvido por Ye7
-          </p>
+          <div className="flex items-center gap-4 text-xs text-slate-400">
+            <Link to="/admin/login" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+              Painel Admin
+            </Link>
+            <span>•</span>
+            <span>Desenvolvido por Ye7</span>
+          </div>
         </div>
       </div>
     </footer>

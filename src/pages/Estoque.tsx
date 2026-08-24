@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, ChevronRight, Calendar, Gauge, Fuel } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { allTrucks } from '../data/trucks';
-
-const brands = ['Todos', ...Array.from(new Set(allTrucks.map((t) => t.brand))).sort()];
+import { allTrucks, type Truck } from '../data/trucks';
+import { useEstoqueCaminhoes } from '@/hooks/useEstoqueCaminhoes';
 
 function AnimatedSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, isVisible } = useScrollAnimation();
@@ -19,11 +18,48 @@ export default function Estoque() {
   const [search, setSearch] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('Todos');
 
-  const filteredTrucks = allTrucks.filter((truck) => {
+  const { data: dbTrucks } = useEstoqueCaminhoes();
+
+  // Mapear dados do banco para o formato de exibição, ou usar fallback estático
+  const trucksList: Truck[] = useMemo(() => {
+    if (dbTrucks && dbTrucks.length > 0) {
+      return dbTrucks.map((t) => ({
+        id: t.id,
+        name: t.nome,
+        year: String(t.ano),
+        km: String(t.km),
+        fuel: t.combustivel || 'Diesel',
+        price: t.preco || 'Sob Consulta',
+        image: t.image_banner || (t.images && t.images[0]) || '',
+        images: t.images || (t.image_banner ? [t.image_banner] : []),
+        brand: t.marca,
+        description: t.descricao || '',
+        specs: {
+          motor: t.motor || '',
+          potencia: t.potencia || '',
+          torque: t.torque || '',
+          cambio: t.cambio || '',
+          eixos: t.eixos || '4x2',
+          pbt: t.pbt || '',
+          entreEixos: t.entre_eixos || '',
+          cabine: t.cabine || 'Curta',
+          cor: t.cor || 'Branco',
+        },
+      }));
+    }
+    return allTrucks;
+  }, [dbTrucks]);
+
+  const brands = useMemo(() => {
+    return ['Todos', ...Array.from(new Set(trucksList.map((t) => t.brand))).sort()];
+  }, [trucksList]);
+
+  const filteredTrucks = trucksList.filter((truck) => {
     const matchSearch = truck.name.toLowerCase().includes(search.toLowerCase());
     const matchBrand = selectedBrand === 'Todos' || truck.brand === selectedBrand;
     return matchSearch && matchBrand;
   });
+
 
   return (
     <main className="bg-white min-h-screen">
