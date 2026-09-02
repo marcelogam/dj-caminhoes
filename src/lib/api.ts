@@ -63,6 +63,7 @@ export interface EstoqueCaminhaoRow {
   pbt: string | null;
   entre_eixos: string | null;
   cabine: string | null;
+  tipo_carroceria: string | null;
   caracteristicas: string[];
   created_at?: string;
   updated_at?: string;
@@ -90,6 +91,7 @@ export interface CreateCaminhaoPayload {
   pbt?: string;
   entre_eixos?: string;
   cabine?: string;
+  tipo_carroceria?: string;
   caracteristicas?: string[];
 }
 

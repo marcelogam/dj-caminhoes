@@ -62,6 +62,7 @@ async function ensureTableExists() {
         pbt VARCHAR(100),
         entre_eixos VARCHAR(100),
         cabine VARCHAR(100),
+        tipo_carroceria VARCHAR(100),
         caracteristicas TEXT[] DEFAULT '{}',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -136,6 +137,8 @@ const createCaminhaoSchema = z.object({
   entre_eixos: z.string().max(100).optional().default(""),
 
   cabine: z.string().max(100).optional().default(""),
+
+  tipo_carroceria: z.string().max(100).optional().default(""),
 
   caracteristicas: z.array(z.string()).optional().default([]),
 });
@@ -238,11 +241,11 @@ export default async function handler(
         `INSERT INTO estoque_caminhoes
           (nome, marca, modelo, ano, km, combustivel, preco, cor, status,
            image_banner, images, descricao, motor, potencia, torque,
-           cambio, eixos, pbt, entre_eixos, cabine, caracteristicas)
+           cambio, eixos, pbt, entre_eixos, cabine, tipo_carroceria, caracteristicas)
         VALUES
           ($1, $2, $3, $4, $5, $6, $7, $8, $9,
            $10, $11, $12, $13, $14, $15,
-           $16, $17, $18, $19, $20, $21)
+           $16, $17, $18, $19, $20, $21, $22)
         RETURNING *`,
         [
           data.nome,
@@ -265,6 +268,7 @@ export default async function handler(
           data.pbt || null,
           data.entre_eixos || null,
           data.cabine || null,
+          data.tipo_carroceria || null,
           data.caracteristicas || [],
         ]
       );
@@ -328,6 +332,7 @@ export default async function handler(
       pbt: data.pbt,
       entre_eixos: data.entre_eixos,
       cabine: data.cabine,
+      tipo_carroceria: data.tipo_carroceria,
       caracteristicas: data.caracteristicas,
     };
 

@@ -88,6 +88,7 @@ const initialFormState: CreateCaminhaoPayload = {
   pbt: "",
   entre_eixos: "",
   cabine: "Curta",
+  tipo_carroceria: "",
   caracteristicas: [],
 };
 
@@ -150,6 +151,7 @@ export default function AdminEstoquePage() {
       pbt: caminhao.pbt || "",
       entre_eixos: caminhao.entre_eixos || "",
       cabine: caminhao.cabine || "Curta",
+      tipo_carroceria: caminhao.tipo_carroceria || "",
       caracteristicas: caminhao.caracteristicas || [],
     });
     setCaracteristicasText((caminhao.caracteristicas || []).join("\n"));
@@ -563,6 +565,16 @@ export default function AdminEstoquePage() {
                         placeholder="Ex: Leito / Teto Alto"
                         value={form.cabine}
                         onChange={(e) => handleChange("cabine", e.target.value)}
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label htmlFor="tipo_carroceria" className="text-xs">Tipo de Carroceria</Label>
+                      <Input
+                        id="tipo_carroceria"
+                        placeholder="Ex: Caçamba / Baú / Sider"
+                        value={form.tipo_carroceria}
+                        onChange={(e) => handleChange("tipo_carroceria", e.target.value)}
                       />
                     </div>
                   </div>

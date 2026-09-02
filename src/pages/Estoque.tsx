@@ -43,6 +43,7 @@ export default function Estoque() {
           pbt: t.pbt || '',
           entreEixos: t.entre_eixos || '',
           cabine: t.cabine || 'Curta',
+          tipo_carroceria: t.tipo_carroceria || 'Não especificado',
           cor: t.cor || 'Branco',
         },
       }));

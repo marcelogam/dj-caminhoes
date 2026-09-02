@@ -80,6 +80,7 @@ export default function CaminhaoDetalhe() {
           pbt: dbTruck.pbt || '-',
           entreEixos: dbTruck.entre_eixos || '-',
           cabine: dbTruck.cabine || 'Curta',
+          tipo_carroceria: dbTruck.tipo_carroceria || 'Não especificado',
           cor: dbTruck.cor || 'Branco',
         },
       }
@@ -154,6 +155,7 @@ export default function CaminhaoDetalhe() {
     { icon: Gauge, label: 'PBT', value: truck.specs.pbt },
     { icon: Ruler, label: 'Entre-Eixos', value: truck.specs.entreEixos },
     { icon: Shield, label: 'Cabine', value: truck.specs.cabine },
+    { icon: TruckIcon, label: 'Tipo de Carroceria', value: truck.specs.tipo_carroceria },
     { icon: PaintBucket, label: 'Cor', value: truck.specs.cor }
   ];
 
