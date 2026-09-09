@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -48,10 +48,17 @@ export default function CaminhaoDetalhe() {
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(0);
+  const thumbnailsRef = useRef<HTMLDivElement | null>(null);
 
   const { data: dbTruck, isLoading } = useCaminhao(id);
 
   const staticTruck = getTruckById(Number(id));
+  const normalizedTruckImages: string[] = dbTruck
+    ? [...new Set(
+        [dbTruck.image_banner, ...(dbTruck.images || [])]
+          .filter((image): image is string => Boolean(image))
+      )]
+    : staticTruck?.images ?? [];
 
   // Combinar dados do banco ou estático
   const truck: Truck | undefined = dbTruck
@@ -62,13 +69,8 @@ export default function CaminhaoDetalhe() {
         km: String(dbTruck.km),
         fuel: dbTruck.combustivel || 'Diesel',
         price: dbTruck.preco || 'Sob Consulta',
-        image: dbTruck.image_banner || (dbTruck.images && dbTruck.images[0]) || '',
-        images:
-          dbTruck.images && dbTruck.images.length > 0
-            ? dbTruck.images
-            : dbTruck.image_banner
-            ? [dbTruck.image_banner]
-            : [''],
+        image: normalizedTruckImages[0] || '',
+        images: normalizedTruckImages.length > 0 ? normalizedTruckImages : [''],
         brand: dbTruck.marca,
         description: dbTruck.descricao || '',
         specs: {
@@ -162,27 +164,16 @@ export default function CaminhaoDetalhe() {
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % truck.images.length);
   const prevImage = () => setCurrentImage((prev) => (prev - 1 + truck.images.length) % truck.images.length);
 
+  useEffect(() => {
+    if (!thumbnailsRef.current) return;
+    const selectedThumbnail = thumbnailsRef.current.querySelector<HTMLButtonElement>(`button[data-index="${currentImage}"]`);
+    selectedThumbnail?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, [currentImage]);
+
   return (
     <main className="bg-white min-h-screen">
-      {/* Breadcrumb */}
-      <section className="pt-24 pb-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-sm text-slate-500">
-            <Link to="/" className="hover:text-slate-900 transition-colors">
-              Início
-            </Link>
-            <ChevronRight size={14} />
-            <Link to="/estoque" className="hover:text-slate-900 transition-colors">
-              Estoque
-            </Link>
-            <ChevronRight size={14} />
-            <span className="text-primary">{truck.name}</span>
-          </nav>
-        </div>
-      </section>
-
       {/* Back Button */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+      <section className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <button
           id="btn-back"
           onClick={() => navigate(-1)}
@@ -194,16 +185,16 @@ export default function CaminhaoDetalhe() {
       </section>
 
       {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10">
           {/* Gallery */}
-          <div className="animate-fade-in">
+          <div className="animate-fade-in w-full min-w-0">
             {/* Main Image */}
             <div className="relative rounded-3xl overflow-hidden bg-white border border-slate-200 group mb-4">
               <img
                 src={truck.images[currentImage]}
                 alt={`${truck.name} - Foto ${currentImage + 1}`}
-                className="w-full h-[400px] sm:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105 cursor-zoom-in"
+                className="w-full h-[260px] sm:h-[400px] lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105 cursor-zoom-in"
                 onClick={() => openLightbox(currentImage)}
               />
 
@@ -230,12 +221,16 @@ export default function CaminhaoDetalhe() {
             </div>
 
             {/* Thumbnails */}
-            <div className="flex gap-3">
+            <div
+              ref={thumbnailsRef}
+              className="flex gap-3 overflow-x-auto pb-2 scroll-smooth snap-x snap-mandatory"
+            >
               {truck.images.map((img: string, i: number) => (
                 <button
                   key={i}
+                  data-index={i}
                   onClick={() => setCurrentImage(i)}
-                  className={`relative rounded-xl overflow-hidden border-2 transition-all duration-300 flex-1 h-20 sm:h-24 ${currentImage === i
+                  className={`relative shrink-0 snap-start rounded-xl overflow-hidden border-2 transition-all duration-300 w-[86px] sm:w-[110px] lg:w-[120px] h-20 sm:h-24 ${currentImage === i
                     ? 'border-primary shadow-lg shadow-primary/20'
                     : 'border-slate-200 hover:border-slate-200/80 opacity-60 hover:opacity-100'
                     }`}
@@ -252,7 +247,7 @@ export default function CaminhaoDetalhe() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <span className="text-xs text-primary font-semibold tracking-wider uppercase">{truck.brand}</span>
-                <h1 className="text-3xl sm:text-4xl font-display font-black text-slate-900 mt-1">{truck.name}</h1>
+                <h1 className="text-xl sm:text-2xl lg:text-4xl font-display font-black text-slate-900 mt-1 leading-tight">{truck.name}</h1>
               </div>
             </div>
 
@@ -262,30 +257,30 @@ export default function CaminhaoDetalhe() {
                 <Calendar size={22} className="text-primary shrink-0" />
                 <div>
                   <p className="text-xs text-slate-400 font-medium uppercase tracking-wide leading-none mb-0.5">Ano</p>
-                  <p className="text-xl font-black text-slate-900 leading-none">{truck.year}</p>
+                  <p className="text-x md:text-xl font-black text-slate-900 leading-none">{truck.year}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-1 min-w-[130px] px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
                 <Gauge size={22} className="text-primary shrink-0" />
                 <div>
                   <p className="text-xs text-slate-400 font-medium uppercase tracking-wide leading-none mb-0.5">Quilometragem</p>
-                  <p className="text-xl font-black text-slate-900 leading-none">{truck.km} <span className="text-sm font-semibold text-slate-500">km</span></p>
+                  <p className="text-x md:text-xl font-black text-slate-900 leading-none">{truck.km} <span className="text-sm font-semibold text-slate-500">km</span></p>
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-1 min-w-[130px] px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
                 <Fuel size={22} className="text-primary shrink-0" />
                 <div>
                   <p className="text-xs text-slate-400 font-medium uppercase tracking-wide leading-none mb-0.5">Combustível</p>
-                  <p className="text-xl font-black text-slate-900 leading-none">{truck.fuel}</p>
+                  <p className="text-x md:text-xl font-black text-slate-900 leading-none">{truck.fuel}</p>
                 </div>
               </div>
             </div>
 
 
             {/* Price */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 mb-6">
+            <div className="p-3 rounded-2xl bg-white border border-slate-200 mb-6">
               <p className="text-sm text-slate-500 mb-1">Preço</p>
-              <p className="text-3xl sm:text-4xl font-display font-black text-gradient-primary">{truck.price}</p>
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-gradient-primary">{truck.price}</p>
               <p className="text-xs text-slate-400 mt-2">* Consulte condições de financiamento</p>
             </div>
 

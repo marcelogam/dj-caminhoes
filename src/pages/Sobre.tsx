@@ -37,17 +37,6 @@ export default function Sobre() {
         />
       </section>
 
-      {/* Header */}
-      <section className="relative pt-15 pb-10 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <AnimatedSection>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 mb-4">
-              Sobre a DJ Caminhões
-            </h1>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* Story */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

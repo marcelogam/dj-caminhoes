@@ -64,22 +64,9 @@ export default function Estoque() {
 
   return (
     <main className="bg-white min-h-screen">
-      {/* Header */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 mb-4">
-              Nosso Estoque
-            </h1>
-            <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-              Explore nosso catálogo completo de caminhões. Todos revisados e prontos para rodar.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
 
       {/* Filters */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <section className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="flex flex-col md:flex-row gap-4 items-center">
           {/* Search */}
           <div className="relative flex-1 w-full">

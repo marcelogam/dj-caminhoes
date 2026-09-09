@@ -42,6 +42,22 @@ html {
   background: var(--color-primary);
 }
 
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.45);
+  }
+}
+
 /* Animation keyframes */
 @keyframes fade-in-up {
   from {
@@ -153,4 +169,13 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
