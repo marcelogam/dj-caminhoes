@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -21,9 +21,9 @@ import {
   ZoomIn,
   Loader2,
 } from 'lucide-react';
-import { getTruckById, getRelatedTrucks, type Truck } from '../data/trucks';
+import { getTruckById, type Truck } from '../data/trucks';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { useCaminhao } from '@/hooks/useEstoqueCaminhoes';
+import { useCaminhao, useEstoqueCaminhoes } from '@/hooks/useEstoqueCaminhoes';
 
 function AnimatedSection({
   children,
@@ -51,6 +51,7 @@ export default function CaminhaoDetalhe() {
   const thumbnailsRef = useRef<HTMLDivElement | null>(null);
 
   const { data: dbTruck, isLoading } = useCaminhao(id);
+  const { data: dbTrucks } = useEstoqueCaminhoes();
 
   const staticTruck = getTruckById(Number(id));
   const normalizedTruckImages: string[] = dbTruck
@@ -88,8 +89,30 @@ export default function CaminhaoDetalhe() {
       }
     : staticTruck;
 
-  const relatedTrucks = getRelatedTrucks(Number(id));
+  const relatedTrucks = useMemo(() => {
+    const sourceList = dbTrucks && dbTrucks.length > 0 ? dbTrucks : [];
 
+    if (!sourceList.length) return [];
+
+    return sourceList
+      .filter((item) => item.id !== Number(id))
+      .sort((a, b) => {
+        const aScore = a.marca === truck?.brand ? 1 : 0;
+        const bScore = b.marca === truck?.brand ? 1 : 0;
+        return bScore - aScore;
+      })
+      .slice(0, 4)
+      .map((item) => ({
+        id: item.id,
+        name: item.nome,
+        year: String(item.ano),
+        km: String(item.km),
+        fuel: item.combustivel || 'Diesel',
+        price: item.preco || 'Sob Consulta',
+        image: item.image_banner || (item.images && item.images[0]) || '',
+        brand: item.marca,
+      }));
+  }, [dbTrucks, id, truck?.brand]);
 
   const openLightbox = (index: number) => {
     setLightboxImage(index);
@@ -119,6 +142,28 @@ export default function CaminhaoDetalhe() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [lightboxOpen, lightboxNext, lightboxPrev]);
 
+  const specItems = [
+    { icon: Cog, label: 'Motor', value: truck?.specs.motor || '-' },
+    { icon: Zap, label: 'Potência', value: truck?.specs.potencia || '-' },
+    { icon: RotateCcw, label: 'Torque', value: truck?.specs.torque || '-' },
+    { icon: Settings, label: 'Câmbio', value: truck?.specs.cambio || '-' },
+    { icon: TruckIcon, label: 'Eixos', value: truck?.specs.eixos || '4x2' },
+    { icon: Gauge, label: 'PBT', value: truck?.specs.pbt || '-' },
+    { icon: Ruler, label: 'Entre-Eixos', value: truck?.specs.entreEixos || '-' },
+    { icon: Shield, label: 'Cabine', value: truck?.specs.cabine || 'Curta' },
+    { icon: TruckIcon, label: 'Tipo de Carroceria', value: truck?.specs.tipo_carroceria || 'Não especificado' },
+    { icon: PaintBucket, label: 'Cor', value: truck?.specs.cor || 'Branco' }
+  ];
+
+  const nextImage = () => setCurrentImage((prev) => (prev + 1) % (truck?.images.length || 1));
+  const prevImage = () => setCurrentImage((prev) => (prev - 1 + (truck?.images.length || 1)) % (truck?.images.length || 1));
+
+  useEffect(() => {
+    if (!thumbnailsRef.current) return;
+    const selectedThumbnail = thumbnailsRef.current.querySelector<HTMLButtonElement>(`button[data-index="${currentImage}"]`);
+    selectedThumbnail?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, [currentImage]);
+
   if (isLoading && !truck) {
     return (
       <main className="bg-white min-h-screen flex items-center justify-center">
@@ -147,28 +192,6 @@ export default function CaminhaoDetalhe() {
       </main>
     );
   }
-
-  const specItems = [
-    { icon: Cog, label: 'Motor', value: truck.specs.motor },
-    { icon: Zap, label: 'Potência', value: truck.specs.potencia },
-    { icon: RotateCcw, label: 'Torque', value: truck.specs.torque },
-    { icon: Settings, label: 'Câmbio', value: truck.specs.cambio },
-    { icon: TruckIcon, label: 'Eixos', value: truck.specs.eixos },
-    { icon: Gauge, label: 'PBT', value: truck.specs.pbt },
-    { icon: Ruler, label: 'Entre-Eixos', value: truck.specs.entreEixos },
-    { icon: Shield, label: 'Cabine', value: truck.specs.cabine },
-    { icon: TruckIcon, label: 'Tipo de Carroceria', value: truck.specs.tipo_carroceria },
-    { icon: PaintBucket, label: 'Cor', value: truck.specs.cor }
-  ];
-
-  const nextImage = () => setCurrentImage((prev) => (prev + 1) % truck.images.length);
-  const prevImage = () => setCurrentImage((prev) => (prev - 1 + truck.images.length) % truck.images.length);
-
-  useEffect(() => {
-    if (!thumbnailsRef.current) return;
-    const selectedThumbnail = thumbnailsRef.current.querySelector<HTMLButtonElement>(`button[data-index="${currentImage}"]`);
-    selectedThumbnail?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }, [currentImage]);
 
   return (
     <main className="bg-white min-h-screen">
@@ -358,46 +381,48 @@ export default function CaminhaoDetalhe() {
       </section>
 
       {/* Related Trucks */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <AnimatedSection className="mb-10">
-          <h2 className="text-2xl sm:text-3xl font-display font-black text-slate-900">
-            Outros Caminhões que Podem te Interessar
-          </h2>
-        </AnimatedSection>
+      {relatedTrucks.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+          <AnimatedSection className="mb-10">
+            <h2 className="text-2xl sm:text-3xl font-display font-black text-slate-900">
+              Outros Caminhões que Podem te Interessar
+            </h2>
+          </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {relatedTrucks.map((rt, i) => (
-            <AnimatedSection key={rt.id} className={`delay-${Math.min((i + 1) * 100, 400)}`}>
-              <Link
-                to={`/caminhao/${rt.id}`}
-                className="group block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
-              >
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={rt.image}
-                    alt={rt.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                </div>
-                <div className="p-4 space-y-2">
-                  <h3 className="text-base font-display font-bold text-slate-900 group-hover:text-primary transition-colors">
-                    {rt.name}
-                  </h3>
-                  <div className="flex items-center gap-3 text-xs text-slate-500">
-                    <span>{rt.year}</span>
-                    <span className="w-1 h-1 rounded-full bg-dark-border" />
-                    <span>{rt.km} km</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {relatedTrucks.map((rt, i) => (
+              <AnimatedSection key={rt.id} className={`delay-${Math.min((i + 1) * 100, 400)}`}>
+                <Link
+                  to={`/caminhao/${rt.id}`}
+                  className="group block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
+                >
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={rt.image}
+                      alt={rt.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
                   </div>
-                  <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
-                    <span className="text-primary font-display font-bold">{rt.price}</span>
-                    <ChevronRight size={16} className="text-slate-400 group-hover:text-primary transition-colors" />
+                  <div className="p-4 space-y-2">
+                    <h3 className="text-base font-display font-bold text-slate-900 group-hover:text-primary transition-colors">
+                      {rt.name}
+                    </h3>
+                    <div className="flex items-center gap-3 text-xs text-slate-500">
+                      <span>{rt.year}</span>
+                      <span className="w-1 h-1 rounded-full bg-dark-border" />
+                      <span>{rt.km} km</span>
+                    </div>
+                    <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
+                      <span className="text-primary font-display font-bold">{rt.price}</span>
+                      <ChevronRight size={16} className="text-slate-400 group-hover:text-primary transition-colors" />
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </AnimatedSection>
-          ))}
-        </div>
-      </section>
+                </Link>
+              </AnimatedSection>
+            ))}
+          </div>
+        </section>
+      )}
       {/* Lightbox Modal */}
       {lightboxOpen && truck && (
         <div
