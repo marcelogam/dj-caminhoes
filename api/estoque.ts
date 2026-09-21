@@ -2,6 +2,8 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import pg from "pg";
 import { z } from "zod";
 import { isRequestAuthorized } from "./auth.js";
+import { del } from "@vercel/blob";
+import { deleteVehicleWithImages } from './_vehicle-deletion.js';
 
 const { Pool } = pg;
 
@@ -392,18 +394,18 @@ export default async function handler(
     }
 
     try {
-      const result = await pool.query(
-        "DELETE FROM estoque_caminhoes WHERE id = $1 RETURNING id, nome",
-        [id]
-      );
+      const deleted = await deleteVehicleWithImages(id, {
+        connect: () => pool.connect(),
+        remove: del,
+      });
 
-      if (result.rowCount === 0) {
+      if (!deleted) {
         return res.status(404).json({ error: `Caminhão com ID ${id} não encontrado` });
       }
 
       return res.status(200).json({
         success: true,
-        deleted: result.rows[0],
+        deleted,
       });
     } catch (error) {
       console.error("[DELETE /api/estoque] Erro ao remover:", error);

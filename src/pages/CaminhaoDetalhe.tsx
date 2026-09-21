@@ -339,10 +339,6 @@ export default function CaminhaoDetalhe() {
 
             {/* Financing Box */}
             <div className="p-5 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
-              <div className="flex items-center gap-3 mb-2">
-                <CreditCard size={20} className="text-primary" />
-                <h3 className="text-slate-900 font-semibold">Financiamento Facilitado</h3>
-              </div>
               <p className="text-sm text-slate-500">
                 Parcelas a partir de <span className="text-primary font-bold">R$ 8.500/mês</span>. Consulte condições
                 especiais com nosso time comercial.
