@@ -335,14 +335,6 @@ export default function CaminhaoDetalhe() {
                 Ligar Agora
               </a>
             </div>
-
-            {/* Financing Box */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
-              <p className="text-sm text-slate-500">
-                Parcelas a partir de <span className="text-primary font-bold">R$ 8.500/mês</span>. Consulte condições
-                especiais com nosso time comercial.
-              </p>
-            </div>
           </div>
         </div>
       </section>
