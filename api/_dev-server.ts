@@ -10,8 +10,11 @@ import "dotenv/config";
 import express from "express";
 import fs from "fs";
 import path from "path";
-import estoqueHandler from "./estoque.js";
-import authHandler from "./auth.js";
+import estoqueHandler, { isImageReferenced } from "./estoque.js";
+import authHandler, { isRequestAuthorized } from "./auth.js";
+import uploadHandler from './upload.js';
+import { isManagedBlobUrl, parseImageBody } from './_image-policy.js';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const app = express();
 const PORT = 3001;
@@ -41,6 +44,9 @@ app.post(
   "/api/upload",
   express.raw({ type: "*/*", limit: "15mb" }),
   (req, res) => {
+    if (!isRequestAuthorized(req as unknown as VercelRequest)) {
+      return res.status(401).json({ error: 'Faça login para gerenciar imagens.' });
+    }
     try {
       const rawFilename = req.headers["x-filename"]
         ? decodeURIComponent(req.headers["x-filename"] as string)
@@ -69,18 +75,26 @@ app.post(
   }
 );
 
-app.delete("/api/upload", express.json(), (req, res) => {
+app.delete("/api/upload", express.json(), async (req, res) => {
+  if (!isRequestAuthorized(req as unknown as VercelRequest)) {
+    return res.status(401).json({ error: 'Faça login para gerenciar imagens.' });
+  }
   try {
-    const { url } = req.body as { url: string };
-    if (url && url.includes("/uploads/")) {
-      const filename = url.split("/uploads/").pop();
-      if (filename) {
-        const filePath = path.join(uploadDir, filename);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      }
+    const parsed = parseImageBody(req.body);
+    if (!parsed) return res.status(400).json({ error: 'URL da imagem inválida.' });
+    if (isManagedBlobUrl(parsed.url)) {
+      return await uploadHandler(req as unknown as VercelRequest, res as unknown as VercelResponse);
     }
+    const url = new URL(parsed.url);
+    const filename = url.pathname.slice('/uploads/'.length);
+    if (url.origin !== `http://localhost:${PORT}` || !url.pathname.startsWith('/uploads/')
+      || !/^[a-zA-Z0-9_-][a-zA-Z0-9._-]*\.(jpg|jpeg|png|webp|avif)$/i.test(filename) || url.search || url.hash) {
+      return res.status(400).json({ error: 'URL de upload local inválida.' });
+    }
+    const filePath = path.resolve(uploadDir, filename);
+    if (path.dirname(filePath) !== path.resolve(uploadDir)) return res.status(400).json({ error: 'Caminho inválido.' });
+    if (await isImageReferenced(parsed.url)) return res.status(409).json({ error: 'A foto ainda está vinculada a um caminhão. Salve a remoção primeiro.' });
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("[dev-server] Erro ao deletar upload:", error);

@@ -166,7 +166,7 @@ export default function CaminhaoDetalhe() {
 
   if (isLoading && !truck) {
     return (
-      <main className="bg-white min-h-screen flex items-center justify-center">
+      <main className="dj-public-page min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto mb-4" />
           <p className="text-slate-500 font-medium">Carregando detalhes do caminhão...</p>
@@ -177,7 +177,7 @@ export default function CaminhaoDetalhe() {
 
   if (!truck) {
     return (
-      <main className="bg-white min-h-screen flex items-center justify-center">
+      <main className="dj-public-page min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-display font-black text-slate-900 mb-4">Caminhão não encontrado</h1>
           <p className="text-slate-500 mb-8">O caminhão que você procura não está disponível.</p>
@@ -194,7 +194,7 @@ export default function CaminhaoDetalhe() {
   }
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="dj-public-page min-h-screen">
       {/* Back Button */}
       <section className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <button
@@ -217,7 +217,7 @@ export default function CaminhaoDetalhe() {
               <img
                 src={truck.images[currentImage]}
                 alt={`${truck.name} - Foto ${currentImage + 1}`}
-                className="w-full h-[260px] sm:h-[400px] lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105 cursor-zoom-in"
+                className="w-full h-[260px] sm:h-[400px] lg:h-[500px] object-contain object-center bg-slate-100 p-3 cursor-zoom-in"
                 onClick={() => openLightbox(currentImage)}
               />
 
@@ -258,7 +258,7 @@ export default function CaminhaoDetalhe() {
                     : 'border-slate-200 hover:border-slate-200/80 opacity-60 hover:opacity-100'
                     }`}
                 >
-                  <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+                  <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-contain bg-slate-100" />
                 </button>
               ))}
             </div>
@@ -400,7 +400,7 @@ export default function CaminhaoDetalhe() {
                     <img
                       src={rt.image}
                       alt={rt.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-contain object-center bg-slate-100 p-2"
                     />
                   </div>
                   <div className="p-4 space-y-2">

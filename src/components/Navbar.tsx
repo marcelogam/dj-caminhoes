@@ -1,116 +1,30 @@
-import { useState, useEffect } from 'react';
+﻿import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Truck } from 'lucide-react';
-import logo from '../assets/images/logo.jpeg'
+import { Menu, X, ArrowUpRight } from 'lucide-react';
+import logo from '../assets/images/logo.png';
 
-const navLinks = [
-  { name: 'Início', path: '/' },
-  { name: 'Estoque', path: '/estoque' },
-  { name: 'Sobre', path: '/sobre' },
-  { name: 'Contato', path: '/contato' },
-];
-
+const links = [['Início', '/'], ['Estoque', '/estoque'], ['Sobre a DJ', '/sobre'], ['Contato', '/contato']];
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
-
+  return <Navigation key={location.key} />;
+}
+function Navigation() {
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
   return (
-    <nav
-      id="navbar"
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-xl shadow-md shadow-black/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group" id="nav-logo">
-            <div className="w-36 h-24">
-              <img src={logo} alt="DJ Caminhões" className="w-full h-full object-cover" />
-            </div>
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                id={`nav-${link.name.toLowerCase().replace(/[^a-z]/g, '')}`}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${location.pathname === link.path
-                  ? 'text-primary bg-primary/10'
-                  : 'text-slate-900 hover:text-slate-500 hover:bg-white/5'
-                  }`}
-              >
-                {link.name}
-                {location.pathname === link.path && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full" />
-                )}
-              </Link>
-            ))}
-          </div>
-
-          {/* CTA Desktop */}
-          <div className="hidden md:flex items-center gap-4">
-            <a
-              href="tel:+5531973279799"
-              id="nav-phone"
-              className="flex items-center gap-2 text-sm text-slate-900 hover:text-slate-500 transition-colors"
-            >
-              <Phone size={16} />
-              <span>(31) 97327-9799</span>
-            </a>
-            <Link
-              to="/contato"
-              id="nav-cta"
-              className="flex items-center gap-2 bg-primary hover:bg-primary-light text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5"
-            >
-              <Truck size={16} />
-              Fale Conosco
-            </Link>
-          </div>
-
-          {/* Mobile Toggle */}
-          <button
-            id="nav-mobile-toggle"
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-slate-900 p-2 rounded-lg hover:bg-white/10 transition-colors"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+    <header className="dj-header" id="navbar" onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false); }}>
+      <div className="dj-container dj-header-row">
+        <Link to="/" className="dj-brand" aria-label="DJ Caminhões — início"><img src={logo} alt="DJ Caminhões" /><span>CAMINHÕES PARA<br />QUEM MOVE O BRASIL.</span></Link>
+        <nav className="dj-desktop-nav" aria-label="Navegação principal">
+          {links.map(([label, path]) => <Link key={path} to={path} aria-current={pathname === path ? 'page' : undefined}>{label}</Link>)}
+        </nav>
+        <Link to="/contato" className="dj-header-contact">Fale com a DJ <ArrowUpRight size={17} /></Link>
+        <button className="dj-menu-toggle" aria-label={open ? 'Fechar menu' : 'Abrir menu'} aria-expanded={open} aria-controls="dj-mobile-nav" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
       </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`md:hidden transition-all duration-500 overflow-hidden ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-      >
-        <div className="bg-slate-50/95 backdrop-blur-xl border-t border-slate-200 px-4 py-6 space-y-2">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${location.pathname === link.path
-                ? 'text-primary bg-primary/10'
-                : 'text-slate-500 hover:text-white hover:bg-white/5'
-                }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <div className="pt-4 border-t border-slate-200">
-            <Link
-              to="/contato"
-              className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-3 rounded-xl text-sm font-semibold w-full"
-            >
-              <Truck size={16} />
-              Fale Conosco
-            </Link>
-          </div>
-        </div>
-      </div>
-    </nav>
+      <nav id="dj-mobile-nav" className="dj-mobile-nav dj-container" aria-label="Navegação móvel" hidden={!open}>
+        {links.map(([label, path]) => <Link key={path} to={path} onClick={() => setOpen(false)} aria-current={pathname === path ? 'page' : undefined}>{label}<ArrowUpRight size={22} /></Link>)}
+        <a href="tel:+5531973279799">(31) 97327-9799</a>
+      </nav>
+    </header>
   );
 }

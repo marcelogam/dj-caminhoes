@@ -74,20 +74,29 @@ async function ensureTableExists() {
   }
 }
 
+export async function isImageReferenced(url: string): Promise<boolean> {
+  await ensureTableExists();
+  const result = await pool.query(
+    'SELECT 1 FROM estoque_caminhoes WHERE image_banner = $1 OR $1 = ANY(images) LIMIT 1',
+    [url],
+  );
+  return result.rows.length > 0;
+}
+
 // ─── Validação Zod ───────────────────────────────────────────
 const createCaminhaoSchema = z.object({
   nome: z
-    .string({ required_error: "Nome é obrigatório" })
+    .string({ error: "Nome é obrigatório" })
     .min(2, "Nome deve ter pelo menos 2 caracteres")
     .max(255, "Nome deve ter no máximo 255 caracteres"),
 
   marca: z
-    .string({ required_error: "Marca é obrigatória" })
+    .string({ error: "Marca é obrigatória" })
     .min(1, "Marca é obrigatória")
     .max(100),
 
   modelo: z
-    .string({ required_error: "Modelo é obrigatório" })
+    .string({ error: "Modelo é obrigatório" })
     .min(1, "Modelo é obrigatório")
     .max(100),
 
@@ -108,12 +117,12 @@ const createCaminhaoSchema = z.object({
     .transform((val) => (val !== undefined && val !== null ? String(val) : "")),
 
   cor: z
-    .string({ required_error: "Cor é obrigatória" })
+    .string({ error: "Cor é obrigatória" })
     .min(1, "Cor é obrigatória")
     .max(100),
 
   status: z.enum(["Disponível", "Pronta Entrega", "Sob encomenda", "Reservado", "Vendido", "Esgotado"], {
-    required_error: "Status é obrigatório",
+    error: "Status é obrigatório",
   }).default("Disponível"),
 
   image_banner: z.string().optional().or(z.literal("")),

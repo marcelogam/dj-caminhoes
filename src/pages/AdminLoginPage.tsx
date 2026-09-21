@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Lock, Eye, EyeOff, Loader2, ArrowLeft, ShieldCheck, Truck } from "lucide-react";
 import { loginAdmin } from "@/lib/api";
 import { toast } from "sonner";
-import logo from "@/assets/images/logo.jpeg";
+import logo from "@/assets/images/logo.png";
 
 export default function AdminLoginPage() {
   const [password, setPassword] = useState("");

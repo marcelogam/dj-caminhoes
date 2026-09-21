@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { put, del } from "@vercel/blob";
 import { isRequestAuthorized } from "./auth.js";
+import { deleteManagedImage, parseImageBody } from './_image-policy.js';
+import { isImageReferenced } from './estoque.js';
 
 export const config = {
   api: {
@@ -80,25 +82,19 @@ export default async function handler(
   // ─── DELETE: Remover imagem ─────────────────────────────────
   if (req.method === "DELETE") {
     try {
-      let bodyData: any = req.body;
+      let bodyData: unknown = req.body;
       if (!bodyData) {
         const buffers: Buffer[] = [];
         for await (const chunk of req) {
           buffers.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
         }
         const text = Buffer.concat(buffers).toString("utf-8");
-        bodyData = text ? JSON.parse(text) : {};
+        bodyData = text;
       }
 
-      const { url } = bodyData as { url: string };
-
-      if (!url) {
-        return res.status(400).json({ error: "URL da imagem é obrigatória" });
-      }
-
-      await del(url);
-
-      return res.status(200).json({ success: true });
+      const parsed = parseImageBody(bodyData);
+      const result = await deleteManagedImage(parsed?.url, { isReferenced: isImageReferenced, remove: del });
+      return res.status(result.status).json(result.body);
     } catch (error) {
       console.error("[DELETE /api/upload] Erro:", error);
       return res.status(500).json({

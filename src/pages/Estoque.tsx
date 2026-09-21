@@ -63,16 +63,18 @@ export default function Estoque() {
 
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="dj-public-page min-h-screen">
 
       {/* Filters */}
-      <section className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <section className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="dj-catalog-heading"><span className="dj-eyebrow">Estoque / DJ Caminhões</span><h1>Seu próximo caminhão<br />começa aqui.</h1><p>Explore os veículos e encontre a opção para o seu negócio.</p></div>
         <div className="flex flex-col md:flex-row gap-4 items-center">
           {/* Search */}
           <div className="relative flex-1 w-full">
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               id="search-input"
+              aria-label="Buscar caminhão"
               type="text"
               placeholder="Buscar caminhão..."
               value={search}
@@ -102,7 +104,7 @@ export default function Estoque() {
       </section>
 
       {/* Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
         {filteredTrucks.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-500 text-lg">Nenhum caminhão encontrado com os filtros selecionados.</p>
@@ -119,7 +121,7 @@ export default function Estoque() {
                     <img
                       src={truck.image}
                       alt={truck.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-contain object-center bg-slate-100 p-2"
                     />
                   </div>
 

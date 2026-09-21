@@ -54,9 +54,9 @@ export default function Contato() {
   ];
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="dj-public-page min-h-screen">
       {/* Header */}
-      <section className="relative pt-28 pb-16 overflow-hidden">
+      <section className="relative pt-28 pb-8 md:pb-10 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimatedSection>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 mb-4">
@@ -70,7 +70,7 @@ export default function Contato() {
       </section>
 
       {/* Contact Cards */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {contactInfo.map((info, i) => (
             <AnimatedSection key={info.label} className={`delay-${(i + 1) * 100}`}>
@@ -90,7 +90,7 @@ export default function Contato() {
       </section>
 
       {/* Form + Map */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Form */}
           <AnimatedSection animation="animate-slide-left">

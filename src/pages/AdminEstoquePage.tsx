@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -39,12 +39,14 @@ import {
 } from "@/hooks/useEstoqueCaminhoes";
 import {
   clearAdminToken,
+  deleteImage,
   type CreateCaminhaoPayload,
   type EstoqueCaminhaoRow,
 } from "@/lib/api";
 import { ImageUpload, MultiImageUpload } from "@/components/ImageUpload";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { toast } from "sonner";
+import { prepareImageRemoval } from '@/lib/image-removal';
 
 const STATUS_OPTIONS = [
   "Disponível",
@@ -108,28 +110,55 @@ export default function AdminEstoquePage() {
 
   // Estado de edição
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [savedImages, setSavedImages] = useState<string[]>([]);
+  const [pendingRemoval, setPendingRemoval] = useState<string[]>([]);
+  const [imageBusy, setImageBusy] = useState(false);
+  const imageBusyRef = useRef(false);
+  const [isCleaningImages, setIsCleaningImages] = useState(false);
+  const onImageBusyChange = useCallback((busy: boolean) => {
+    imageBusyRef.current = busy;
+    setImageBusy(busy);
+  }, []);
+
+  const removeFormImage = async (url: string) => {
+    const result = await prepareImageRemoval(url, savedImages, deleteImage);
+    if (result === 'deferred') {
+      setPendingRemoval((previous) => [...new Set([...previous, url])]);
+    }
+    setForm((previous) => ({ ...previous,
+      image_banner: previous.image_banner === url ? '' : previous.image_banner,
+      images: (previous.images ?? []).filter((image) => image !== url),
+    }));
+  };
 
   // Estado do modal de exclusão
   const [deleteTarget, setDeleteTarget] = useState<EstoqueCaminhaoRow | null>(null);
 
   const handleLogout = () => {
+    if (imageBusyRef.current || isCleaningImages || createMutation.isPending || updateMutation.isPending) return;
     clearAdminToken();
     toast.info("Sessão encerrada com sucesso.");
     navigate("/admin/login");
   };
 
-  const handleChange = (field: keyof CreateCaminhaoPayload, value: any) => {
+  const handleChange = <K extends keyof CreateCaminhaoPayload>(field: K, value: CreateCaminhaoPayload[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const resetForm = () => {
+    if (imageBusyRef.current || isCleaningImages || createMutation.isPending || updateMutation.isPending) return;
     setForm(initialFormState);
     setCaracteristicasText("");
     setEditingId(null);
     setShowForm(false);
+    setSavedImages([]);
+    setPendingRemoval([]);
   };
 
   const startEdit = (caminhao: EstoqueCaminhaoRow) => {
+    if (imageBusyRef.current || isCleaningImages || createMutation.isPending || updateMutation.isPending) return;
+    setSavedImages([caminhao.image_banner, ...(caminhao.images ?? [])].filter((url): url is string => Boolean(url)));
+    setPendingRemoval([]);
     setForm({
       nome: caminhao.nome,
       marca: caminhao.marca,
@@ -163,6 +192,7 @@ export default function AdminEstoquePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (imageBusyRef.current || isCleaningImages || createMutation.isPending || updateMutation.isPending) return;
 
     const caracteristicas = caracteristicasText
       .split("\n")
@@ -181,6 +211,18 @@ export default function AdminEstoquePage() {
       if (editingId) {
         // ── ATUALIZAR ──
         await updateMutation.mutateAsync({ id: editingId, data: payload });
+        setSavedImages([payload.image_banner, ...(payload.images ?? [])].filter((url): url is string => Boolean(url)));
+        setIsCleaningImages(true);
+        const cleanup = await Promise.allSettled(pendingRemoval.map((url) => deleteImage(url)));
+        setIsCleaningImages(false);
+        const failed = pendingRemoval.filter((_, index) => cleanup[index].status === 'rejected');
+        setPendingRemoval(failed);
+        if (failed.length) {
+          toast.warning('Cadastro salvo; há fotos pendentes de exclusão.', {
+            description: 'Clique em Salvar Alterações para tentar novamente. Fotos usadas em outro anúncio são preservadas.',
+          });
+          return;
+        }
         toast.success("Caminhão atualizado com sucesso!", {
           description: `${payload.nome} foi atualizado no estoque.`,
         });
@@ -192,7 +234,8 @@ export default function AdminEstoquePage() {
         });
       }
       resetForm();
-    } catch (err: any) {
+    } catch (caught) {
+      const err = caught as Error & { fieldErrors?: Record<string, string[]> };
       if (err.fieldErrors) {
         const messages = Object.entries(err.fieldErrors)
           .map(([field, msgs]) => `${field}: ${(msgs as string[]).join(", ")}`)
@@ -207,6 +250,7 @@ export default function AdminEstoquePage() {
   };
 
   const handleDelete = async () => {
+    if (imageBusyRef.current || isCleaningImages || createMutation.isPending || updateMutation.isPending) return;
     if (!deleteTarget) return;
 
     try {
@@ -219,14 +263,14 @@ export default function AdminEstoquePage() {
       if (editingId === deleteTarget.id) {
         resetForm();
       }
-    } catch (err: any) {
+    } catch (err) {
       toast.error("Erro ao excluir caminhão", {
-        description: err.message || "Tente novamente.",
+        description: err instanceof Error ? err.message : "Tente novamente.",
       });
     }
   };
 
-  const isSaving = createMutation.isPending || updateMutation.isPending;
+  const isSaving = createMutation.isPending || updateMutation.isPending || imageBusy || isCleaningImages;
 
   // Filtragem de caminhões
   const filteredCaminhoes = (caminhoes || []).filter((c) => {
@@ -361,6 +405,7 @@ export default function AdminEstoquePage() {
                   variant="ghost"
                   size="sm"
                   onClick={resetForm}
+                  disabled={isSaving}
                   className="text-slate-500 hover:text-slate-900"
                 >
                   <X size={18} className="mr-1" />
@@ -368,7 +413,8 @@ export default function AdminEstoquePage() {
                 </Button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit}>
+                <fieldset disabled={isSaving} className="space-y-6 min-w-0">
                 {/* Linha 1 — Nome, Marca, Modelo, Status */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="space-y-2 lg:col-span-2">
@@ -587,7 +633,9 @@ export default function AdminEstoquePage() {
                     variant="banner"
                     value={form.image_banner || undefined}
                     onUpload={(url) => handleChange("image_banner", url)}
-                    onRemove={() => handleChange("image_banner", "")}
+                    onRemove={() => removeFormImage(form.image_banner || '')}
+                    onBusyChange={onImageBusyChange}
+                    disabled={isSaving}
                   />
 
                   <div className="space-y-2">
@@ -608,8 +656,14 @@ export default function AdminEstoquePage() {
                   label="Galeria de Fotos Detalhadas (Interior, Motor, Pneus, Carroceria)"
                   value={form.images || []}
                   onChange={(urls) => setForm((prev) => ({ ...prev, images: urls }))}
+                  onRemove={removeFormImage}
+                  onBusyChange={onImageBusyChange}
+                  disabled={isSaving}
                   max={12}
                 />
+                {pendingRemoval.length > 0 && <p role="status" className="text-sm text-amber-800 bg-amber-50 p-3 rounded-lg">
+                  {pendingRemoval.length} foto(s) serão apagadas permanentemente ao salvar as alterações. Cancelar mantém as fotos já salvas.
+                </p>}
 
                 {/* Linha 6 — Características Adicionais */}
                 <div className="space-y-2">
@@ -658,6 +712,7 @@ export default function AdminEstoquePage() {
                     )}
                   </Button>
                 </div>
+                </fieldset>
               </form>
             </Card>
           </div>
