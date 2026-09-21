@@ -16,7 +16,6 @@ import {
   RotateCcw,
   Ruler,
   PaintBucket,
-  CreditCard,
   X,
   ZoomIn,
   Loader2,
