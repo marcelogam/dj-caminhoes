@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from '@/components/ui/sonner';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -105,6 +106,7 @@ export default function App() {
       <Toaster />
       <Router>
         <AppRoutes />
+        <Analytics />
       </Router>
     </QueryClientProvider>
   );
